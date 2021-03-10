@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "assessment/datamodel/generated/proto/enums";
+
+// type:enum name:climate
+enum Climate {
+
+    TEMPERATE = 0;
+    HOT = 1;
+    ARID = 2;
+    MOIST = 3;
+    DRY = 4;
+    TROPICAL = 5;
+    ARCTIC = 6;
+    SUBARCTIC = 7;
+    UNKNOWN = 8;
+}

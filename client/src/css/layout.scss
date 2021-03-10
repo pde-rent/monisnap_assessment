@@ -1,0 +1,131 @@
+@import "mixins";
+
+.flex-vertical {
+  @include flex-vertical();
+}
+
+.flex-horizontal {
+  @include flex-horizontal();
+}
+
+.full-size {
+  @include full-size();
+}
+
+.block {
+  display: block;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.abs {
+  position: absolute;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.top {
+  top: 0;
+}
+
+.bot {
+  bottom: 0;
+}
+
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
+.bg-primary {
+  background-color: $primary;
+}
+
+.bg-secondary {
+  background-color: $secondary;
+}
+
+.bg-active {
+  background-color: $active;
+}
+
+.g-1 {
+  gap: 0.25rem;
+}
+.g-2 {
+  gap: 0.5rem;
+}
+.g-3 {
+  gap: 0.75rem;
+}
+.g-4 {
+  gap: 1rem;
+}
+.g-5 {
+  gap: 1.5rem;
+}
+.g-6 {
+  gap: 2.5rem;
+}
+.g-7 {
+  gap: 5rem;
+}
+.g-8 {
+  gap: 10rem;
+}
+
+.z-1 {
+  z-index: -1;
+} // unclickable layer
+.z0 {
+  z-index: 0;
+} // basic layer
+.z1 {
+  z-index: 1;
+} // .... higher layers
+.z2 {
+  z-index: 2;
+}
+.z3 {
+  z-index: 3;
+}
+.z4 {
+  z-index: 4;
+}
+.z5 {
+  z-index: 5;
+}
+.z6 {
+  z-index: 6;
+}
+.z7 {
+  z-index: 7;
+}
+.z8 {
+  z-index: 8;
+}
+.z9 {
+  z-index: 9;
+}
+.z10 {
+  z-index: 10;
+}

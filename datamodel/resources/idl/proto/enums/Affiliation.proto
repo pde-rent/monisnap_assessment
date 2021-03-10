@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option go_package = "assessment/datamodel/generated/proto/enums";
+
+// type:enum name:affiliation
+enum Affiliation {
+
+  JEDI_ORDER = 0;
+  SITH_ORDER = 1;
+  GALACTIC_REPUBLIC = 2;
+  REBEL_ALLIANCE = 3;
+  GALACTIC_EMPIRE = 4;
+  RESISTANCE = 5;
+  NEW_REPUBLIC = 6;
+  FIRST_ORDER = 7;
+  CONFEDERACY_OF_INDEPENDENT_SYSTEMS = 8;
+  TRADE_FEDERATION = 9;
+  BOUNTY_HUNTERS = 10;
+  MERCENARIES = 11;
+  CRIMINALS = 12;
+  UNAFFILIATED = 13;
+}

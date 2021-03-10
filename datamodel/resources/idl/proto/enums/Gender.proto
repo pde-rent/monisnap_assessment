@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option go_package = "assessment/datamodel/generated/proto/enums";
+
+// type:enum name:gender
+enum Gender {
+
+    MALE = 0;
+    FEMALE = 1;
+    HERMAPHRODITE = 2;
+    NA = 3; // i.e. droids
+}

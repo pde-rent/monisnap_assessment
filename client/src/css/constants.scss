@@ -1,0 +1,19 @@
+@import "quasar.variables";
+
+$font-folder: "../assets/fonts/";
+$font-title: 'Distant Galaxy';
+$font-body: 'Righteous';
+
+$active: $primary;
+
+// shades of grey
+$black: rgb(0,0,0);
+$white: rgb(254, 254, 254);
+$dark: rgb(29,29,29);
+$darker-grey: rgb(42,42,42);
+$dark-grey: rgb(80,80,80);
+$grey: rgb(136,136,136);
+$light-grey: #c9c9c9; //rgb(190,190,190);
+$lighter-grey: #ECECEC; //rgb(190,190,190);
+$light: rgb(248,248,248);
+$lighter: rgb(253,253,253);

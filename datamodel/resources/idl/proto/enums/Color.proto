@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option go_package = "assessment/datamodel/generated/proto/enums";
+
+// type:enum name:color
+enum Color {
+
+  BLACK = 0;
+  BLOND = 1;
+  BLUE = 2;
+  BLUE_GRAY = 3;
+  BROWN = 4;
+  DARK = 5;
+  FAIR = 6;
+  GOLD = 7;
+  GREEN = 8;
+  GREY = 9;
+  HAZEL = 10;
+  LIGHT = 11;
+  METAL = 12;
+  NONE = 13;
+  ORANGE = 14;
+  PALE = 15;
+  PINK = 16;
+  RED = 17;
+  SILVER = 18;
+  TAN = 19;
+  WHITE = 20;
+  YELLOW = 21;
+}

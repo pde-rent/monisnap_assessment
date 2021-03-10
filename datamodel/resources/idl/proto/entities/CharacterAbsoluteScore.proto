@@ -1,0 +1,15 @@
+syntax = "proto3";
+option go_package = "assessment/datamodel/generated/proto/entities";
+
+// table:character_absolute_scores
+message CharacterAbsoluteScore {
+
+  uint64 id = 1;                        // column:id generated pk returned cached
+  uint64 ref = 2;                       // column:ref index cached
+  uint32 likes = 4;                     // column:likes
+  uint32 dislikes = 5;                  // column:dislikes
+}
+
+message CharacterAbsoluteScores {
+  repeated CharacterAbsoluteScore values = 1;
+}

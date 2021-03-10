@@ -1,0 +1,23 @@
+syntax = "proto3";
+option go_package = "assessment/datamodel/generated/proto/entities";
+
+import "enums/Climate.proto";
+
+// table:planets
+message Planet {
+
+  uint64 id = 1;                        // column:id pk generated returned cached
+  string name = 2;                      // column:name unique index cached
+  uint32 daysToRotation = 3;            // column:days_to_rotation
+  uint32 daysToOrbit = 4;               // column:days_to_orbit
+  uint32 diameterKm = 5;                // column:diameter_km
+  Climate climate = 6;                  // column:climate type:enum
+  float standardGravity = 7;            // column:standard_gravity
+  string terrain = 8;                   // column:terrain
+  float surfaceWaterRatio = 9;          // column:surface_water
+  uint64 population = 10;               // column:population
+}
+
+message Planets {
+  repeated Planet values = 1;
+}

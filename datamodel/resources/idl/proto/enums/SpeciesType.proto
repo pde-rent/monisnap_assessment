@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "assessment/datamodel/generated/proto/enums";
+
+// type:enum name:species_type
+enum SpeciesType {
+
+  AMPHIBIAN = 0;
+  ARTIFICIAL = 1;
+  GASTROPOD = 2;
+  INSECTOID = 3;
+  MAMMAL = 4;
+  MAMMALS = 5;
+  OTHER = 6;
+  REPTILE = 7;
+  REPTILIAN = 8;
+  UNKOWN = 9;
+}

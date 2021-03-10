@@ -1,0 +1,25 @@
+syntax = "proto3";
+option go_package = "assessment/datamodel/generated/proto/entities";
+
+import "entities/Planet.proto";
+import "enums/Color.proto";
+import "enums/SpeciesType.proto";
+
+// table:species
+message Species {
+
+    uint64 id = 1;                        // column:id pk generated returned cached
+    string name = 2;                      // column:name unique index cached
+    SpeciesType speciesType = 3;          // column:species_type type:enum
+    uint32 averageHeight = 4;             // column:average_height
+    repeated Color skinColors = 5;        // link_table:character_skin_colors type:enum target:color
+    repeated Color hairColors = 6;        // link_table:character_hair_colors type:enum target:color
+    repeated Color eyeColors = 7;         // link_table:character_eye_colors type:enum target:color
+    uint32 averageLifespan = 8;           // column:average_lifespan
+    string language = 9;                  // column:language
+    Planet homeworld = 10;                // column:homeworld entity table:planets nullable
+}
+
+message SpeciesList {
+  repeated Species values = 1;
+}

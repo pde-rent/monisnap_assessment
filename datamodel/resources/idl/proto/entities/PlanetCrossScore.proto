@@ -1,0 +1,16 @@
+syntax = "proto3";
+option go_package = "assessment/datamodel/generated/proto/entities";
+
+// table:planet_cross_scores
+message PlanetCrossScore {
+
+  uint64 id = 1;                        // column:id generated pk returned cached
+  uint64 ref = 2;                       // column:ref index cached
+  uint64 cmp = 3;                       // column:cmp index cached
+  uint32 refLikes = 4;                  // column:ref_likes
+  uint32 cmpLikes = 5;                  // column:cmp_likes
+}
+
+message PlanetCrossScores {
+  repeated PlanetCrossScore values = 1;
+}

@@ -1,0 +1,63 @@
+@import "constants";
+@import "mixins";
+
+@include font-face("Righteous", righteous);
+@include font-face("Distant Galaxy", distant-galaxy);
+
+.font-monospace {
+  font-family: monospace;
+}
+.font-title {
+  font-family: $font-title;
+}
+.font-body {
+  font-family: $font-body;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-slim {
+  font-weight: 200;
+}
+.font-active {
+  color: $active;
+}
+.font-primary {
+  color: $primary;
+}
+.font-secondary {
+  color: $secondary;
+}
+.font-light {
+  color: $light
+}
+.font-grey {
+  color: $grey
+}
+.font-dark {
+  color: $dark;
+}
+
+.font-1p5rem {
+  font-size: 1.5rem;
+}
+
+.font-1p2rem {
+  font-size: 1.2rem;
+}
+
+.font-2rem {
+  font-size: 2rem;
+}
+
+.font-2p5rem {
+  font-size: 2.5rem;
+}
+
+.font-3rem {
+  font-size: 3rem;
+}
+
+.align-center {
+  text-align: center;
+}
