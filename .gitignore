@@ -2,7 +2,10 @@
 .idea
 .vscode
 
-# swaps and caches
+# swaps / caches / logs
+*.log
+*.swp
+*.swap
 
 # package managers
 node_modules
@@ -13,3 +16,4 @@ node_modules
 target
 dist
 build
+
