@@ -4,6 +4,8 @@
 
 # swaps / caches / logs
 *.log
+*.out
+*.err
 *.swp
 *.swap
 
