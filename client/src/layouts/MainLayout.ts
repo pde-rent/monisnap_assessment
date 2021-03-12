@@ -19,6 +19,7 @@ import {Climate, ICharacter, IPlanet, Affiliation} from "src/generated/bundle";
 import {ASPECT_RATIO, getAspectRatio, isVertical, NOTIFIER, sleep, waitImagesLoaded} from "src/scripts/utils";
 import {ACTION_EMITTER} from "src/scripts/actions";
 import {STYLE} from "src/constants";
+import router from "src/router/index";
 
 export interface AppTab {
     name: string,
@@ -34,11 +35,14 @@ export interface ScoreTab {
     name: string,
     resource: Resource,
     icon: string,
-    board: ScoreBoard | null
+    board: ScoreBoard | null,
+    onclick: () => Promise<void>
 }
 
 const _starfield: Starfield = new Starfield();
 
+// TODO: use enums / strict naming for both app tabs and routes
+// for safer / easier usage
 const _appTabs: { [key: string]: AppTab } = {
 
     'Planets': {
@@ -49,6 +53,7 @@ const _appTabs: { [key: string]: AppTab } = {
         caption: 'Clash of the extended universe planets',
         icon: 'language',
         onclick: async () => {
+            await router().push('home');
             Loading.show({ spinner: QSpinnerOrbit, spinnerColor: STYLE.active });
             await DAO.get([Resource.PLANET]).then(ok => { Loading.hide() });
         }
@@ -60,6 +65,7 @@ const _appTabs: { [key: string]: AppTab } = {
         caption: 'Clash of the main saga characters',
         icon: 'face',
         onclick: async () => {
+            await router().push('characters');
             Loading.show({ spinner: QSpinnerOrbit, spinnerColor: STYLE.active });
             await DAO.get([Resource.CHARACTER]).then(ok => { Loading.hide() });
         }
@@ -71,6 +77,7 @@ const _appTabs: { [key: string]: AppTab } = {
         caption: 'Scoreboards',
         icon: 'emoji_events',
         onclick: async () => {
+            await router().push('scores/characters');
             Loading.show({ spinner: QSpinnerOrbit, spinnerColor: STYLE.active });
             const scoreBoards = await DAO.getScoreBoards();
             if (scoreBoards && scoreBoards.length > 1) {
@@ -90,13 +97,15 @@ const _scoreTabs: { [key: string]: ScoreTab } = {
         name: 'Top Planets',
         resource: Resource.PLANET,
         icon: 'language',
-        board: null
+        board: null,
+        onclick: async () => { await router().push('scores/planets'); }
     },
     "Top Characters": {
         name: 'Top Characters',
         resource: Resource.CHARACTER,
         icon: 'face',
-        board: null
+        board: null,
+        onclick: async () => { await router().push('scores/characters'); }
     }
 };
 

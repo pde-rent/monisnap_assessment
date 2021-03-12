@@ -61,7 +61,7 @@
         style="font-size: 1.5rem"
         :name="tab.name" :label="tab.name" :icon="tab.icon")
     template(v-if="scoreTabName in scoreTabs")
-      .scores.full-size.flex-vertical.g-6.z2.font-light
+      .scores.full-size.g-6.z2.font-light(:class="autoFlexClass()")
         q-table.absolute-scores.font-monospace.font-light.transparent(
           title="Individual likes" dark color="primary" class="sticky-th" align="left"
           :rows="renderTabAbsoluteScores(scoreTabs[scoreTabName])"

@@ -5,7 +5,7 @@ import "strconv"
 const (
 	WS_PATH            = "/ws"
 	WS_VERSION         = 1
-	STATIC_FOLDER_PATH = "./client/public"
+	STATIC_FOLDER_PATH = "./client/dist/spa"
 	ROOT_URL           = "/star-wars-clash"
 	STATIC_PREFIX      = ""
 	PORT               = 8081
@@ -16,5 +16,5 @@ func GetWsRoot() string {
 }
 
 func GetStaticRoot() string {
-	return ROOT_URL + "/" + STATIC_PREFIX
+	return ROOT_URL + STATIC_PREFIX
 }
