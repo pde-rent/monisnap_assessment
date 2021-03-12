@@ -53,7 +53,7 @@ const _appTabs: { [key: string]: AppTab } = {
         caption: 'Clash of the extended universe planets',
         icon: 'language',
         onclick: async () => {
-            await router().push('home');
+            await router().push('planets');
             Loading.show({ spinner: QSpinnerOrbit, spinnerColor: STYLE.active });
             await DAO.get([Resource.PLANET]).then(ok => { Loading.hide() });
         }

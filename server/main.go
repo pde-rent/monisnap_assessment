@@ -7,7 +7,6 @@ import (
 	"github.com/gofiber/websocket/v2"
 	"log"
 	"strconv"
-	"time"
 )
 
 func main() {
@@ -25,12 +24,6 @@ func main() {
 
 	app.Get(GetWsRoot(), websocket.New(wsHandlers.MainWsHandler))
 	//app.Static(GetStaticRoot(), STATIC_FOLDER_PATH)
-	app.Static(GetStaticRoot(), STATIC_FOLDER_PATH, fiber.Static{
-		Compress:      true,
-		ByteRange:     true,
-		Browse:        true,
-		Index:         "index.html",
-		CacheDuration: 10 * time.Second,
-		MaxAge:        3600})
+	app.Static(GetStaticRoot(), STATIC_FOLDER_PATH)
 	log.Fatal(app.Listen(":" + strconv.Itoa(PORT)))
 }
