@@ -1,0 +1,237 @@
+
+@import "../css/constants";
+@import "../css/typo";
+@import "../css/layout";
+@import "../css/effects";
+
+.main-layout {
+  justify-content: flex-start;
+}
+#starfield.blur { filter: blur(2px); }
+.clash, .scores-menu {
+  margin-top: 3rem;
+}
+.scores {
+  box-sizing: border-box;
+  margin-top: 6rem;
+  padding-top: 2rem;
+  padding-bottom: 5rem;
+  min-height: 100vh;
+}
+.clash {
+  padding-top: 2rem;
+  padding-bottom: 5rem;
+  .start {
+    padding-top: 30vh;
+    overflow: hidden;
+    .message {
+      width: 20rem;
+      max-width: 90vw;
+      text-align: center;
+      overflow: hidden;
+      transform: perspective(50px) rotateX(20deg);
+      padding-bottom: 1rem;
+    }
+  }
+  .entity-card {
+    padding: 3rem;
+    max-width: 45vw;
+    width: 30rem;
+
+    .name {
+      min-height: 4rem;
+      text-align: center;
+    }
+
+    opacity: 1;
+    .pics {
+      position: relative;
+      width: 15rem;
+      height: 15rem;
+      border-radius: 50%;
+      .primary {
+        box-sizing: border-box;
+        object-fit: cover;
+        border-radius: 50%;
+        border-style: solid;
+        border-width: 0.4rem;
+        border-color: $primary;
+        &.planet {
+          animation: spin 50s linear infinite;
+          padding: 1.5rem;
+        }
+      }
+      .homeworld, .affiliation {
+        width: 6rem;
+        height: 6rem;
+        position: absolute;
+        img {
+          box-sizing: border-box;
+          padding: 0.2rem;
+          border-radius: 50%;
+          /*filter: invert(1);*/
+          background-color: $primary;
+        }
+      }
+      .homeworld {
+        bottom: 2rem;
+        right: -2.5rem;
+        img {
+          object-fit: cover;
+        }
+      }
+      .affiliation {
+        bottom: -2.5rem;
+        right: 2rem;
+        img {
+          object-fit: contain;
+        }
+      }
+    }
+    &.active {
+      .name { color: $positive; }
+      .pics {
+        .primary {
+          border-width: 1rem;
+          border-color: $positive;
+          padding: 0;
+        }
+        .affiliation, .homeworld {
+          img {
+            background-color: $positive;
+            padding: 0.6rem;
+          }
+        }
+      }
+    }
+    &:hover {
+      /*transform: scale(1.1);*/
+      cursor: pointer;
+    }
+  }
+  .details {
+    white-space: pre;
+    align-items: flex-start;
+    max-width: 100%;
+    overflow: hidden;
+    color: $grey;
+    .entity {
+      max-width: 40vw;
+      overflow: hidden;
+    }
+    .active, .selected {
+      color: $positive;
+      font-weight: 600;
+    }
+  }
+  &.transiting {
+    overflow: hidden;
+    .entity-card {
+      transition: all .4s ease-out; // opacity + scale
+      &.selected {
+        transform: scale(3);
+        opacity: 0;
+      }
+      &:not(.selected) {
+        transform: scale(0.05);
+        opacity: 0;
+      }
+    }
+    .details {
+      opacity: 0;
+    }
+  }
+  .controls {
+  }
+}
+
+// mobile / vertical mq
+@media (max-aspect-ratio: 3/4) {
+  .clash {
+    .inner {
+      flex-direction: column;
+      gap: 1rem;
+      .entity-card {
+        padding: 0.5rem;
+        max-width: 90vw;
+        gap: 1rem;
+        .pics {
+          width: 12rem;
+          height: 12rem;
+          max-width: 90vw;
+          max-height: 90vw;
+          .primary {}
+          .affiliation, .homeworld {
+            width: 4.5rem;
+            height: 4.5rem;
+          }
+          .affiliation {
+            bottom: -1.5rem;
+          }
+          .homeworld {
+            right: -2rem;
+          }
+        }
+      }
+    }
+    .details {
+      font-size: 1.2rem;
+      :not(.active).entity {
+        display: none;
+      }
+    }
+  }
+}
+
+.sticky-th {
+
+  height: 30rem;
+  max-height: 60vh;
+  max-width: 90vw;
+
+  .q-table__title {
+    text-align: center;
+    font-size: 1.3rem;
+    font-family: $font-title;
+    color: $primary;
+  }
+
+  .q-table__top, .q-table__bottom {
+    background-color: $dark;
+    line-height: 2rem;
+    font-size: 1.1rem;
+    color: $light-grey;
+    font-weight: 600;
+    .q-field__control-container {
+      font-size: 1.1rem;
+    }
+  }
+  tbody, thead {
+    td, th {
+      padding: 0 16px;
+      font-size: 1.1rem;
+      line-height: 3rem;
+    }
+  }
+
+  thead tr {
+    &:first-child th {
+      background-color: $dark;
+      color: $light-grey;
+      font-weight: 600;
+    }
+
+    th {
+      position: sticky;
+      z-index: 1;
+    }
+
+    &:first-child th {
+      top: 0;
+    }
+  }
+
+  &.q-table--loading thead tr:last-child th {
+    top: 3rem;
+  }
+}

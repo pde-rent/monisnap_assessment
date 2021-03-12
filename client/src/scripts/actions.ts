@@ -13,7 +13,6 @@ export default class ActionEmitter {
         // reflexion not required as we are now using the Resource hard type
         // const resource: Resource = RESOURCE_BY_ENTITY[liked.constructor.name];
 
-        console.log("liking");
         // remove selected from selection panel
         panel = panel.filter(r => r.id !== liked.id);
         let ok = false;

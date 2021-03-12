@@ -35,7 +35,7 @@
 .pulse {
   padding: 1rem;
   box-shadow: 0 0 0 rgba($active, 0.5);
-  animation: pulse 4s infinite;
+  animation: pulse 3s infinite;
 }
 .pulse:hover {
   animation: none;
@@ -46,7 +46,7 @@
     -webkit-box-shadow: 0 0 0 0 rgba($active, 0.5);
   }
   70% {
-    -webkit-box-shadow: 0 0 0 1rem rgba($active, 0.0);
+    -webkit-box-shadow: 0 0 0 3rem rgba($active, 0.0);
   }
   100% {
     -webkit-box-shadow: 0 0 0 0 rgba($active, 0);
@@ -58,8 +58,8 @@
     box-shadow: 0 0 0 0 rgba($active, 0.5);
   }
   70% {
-    -moz-box-shadow: 0 0 0 1rem rgba($active, 0.0);
-    box-shadow: 0 0 0 1rem rgba($active, 0.0);
+    -moz-box-shadow: 0 0 0 3rem rgba($active, 0.0);
+    box-shadow: 0 0 0 3rem rgba($active, 0.0);
   }
   100% {
     -moz-box-shadow: 0 0 0 0 rgba($active, 0);

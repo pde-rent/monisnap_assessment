@@ -1,6 +1,8 @@
 import { Notify } from 'quasar'
 import {Component} from "app/node_modules/vue";
 import {LooseDictionary} from "app/node_modules/quasar/dist/types/ts-helpers";
+import {util} from "app/node_modules/protobufjs";
+import resolve = util.path.resolve;
 
 const UTF8_DECODER = new TextDecoder("utf-8");
 const UTF8_ENCODER = new TextEncoder();
@@ -130,4 +132,22 @@ export function intToBytes(n: number): Uint8Array {
 
 export function intToUint64Bytes(n: number): Uint8Array {
     return new Uint8Array(new BigUint64Array([BigInt(n)]).buffer);
+}
+
+export function round(n: number, digits: number): number {
+    return (Math.round(n * Math.pow(10, digits)) / Math.pow(10, digits));
+}
+
+export async function waitImagesLoaded(): Promise<void> {
+
+    const imgs: NodeListOf<HTMLImageElement> | null = document.querySelectorAll('img');
+    if (!imgs || !imgs.length) { return Promise.resolve(); }
+    const promises: Promise<void>[] = [];
+
+    for (let i = 0; i < imgs.length; i++) {
+        if (imgs[i].complete) { continue; }
+        const p = new Promise(resolve => imgs[i].addEventListener('load', () => resolve(true)));
+    }
+    await Promise.all(promises);
+    return Promise.resolve();
 }

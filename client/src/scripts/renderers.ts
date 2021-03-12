@@ -1,7 +1,9 @@
 import {Affiliation, Character, Climate, Color, Gender, Planet, Species} from "src/generated/bundle";
-import {SERVER_IMAGES_ROOT} from "src/constants";
-import {Resource, ResourceEntity} from "src/scripts/resources";
-import {LOG} from "src/scripts/utils";
+import {BLACK_HEART, BLUE_HEART, GREEN_HEART, RED_HEART, SERVER_IMAGES_ROOT} from "src/constants";
+import {AbsoluteScore, CrossScore, Resource, ResourceEntity, ScoreResourceEntity} from "src/scripts/resources";
+import {LOG, round} from "src/scripts/utils";
+import {DAO} from "src/scripts/dao";
+import {ScoreTab} from "layouts/MainLayout";
 
 
 const EXTENSION_BY_RESOURCE: { [key: number]: string } = {
@@ -24,7 +26,7 @@ function formatName(name: string): string {
         .replace(/[']/g, "");
 }
 
-function characterDetails(c: Character): string[] {
+function characterRenderer(c: Character): string[] {
 
     const birthSign = c.birthYear > 0 ? "ABY" : "BBY";
     return [
@@ -42,7 +44,7 @@ function characterDetails(c: Character): string[] {
     ];
 }
 
-function planetDetails(p: Planet): string[] {
+function planetRenderer(p: Planet): string[] {
 
     return [
         (p.name ? p.name : "?"),
@@ -116,8 +118,8 @@ export const CHARACTER_DETAILS_UNITS_TEMPLATE = "<div>" + CHARACTER_DETAILS_UNIT
 export function renderEntity(resource: Resource, r: ResourceEntity): string {
     let data: string[] = [];
     switch (resource) {
-        case Resource.PLANET: data = planetDetails(r as Planet); break;
-        case Resource.CHARACTER: data = characterDetails(r as Character); break;
+        case Resource.PLANET: data = planetRenderer(r as Planet); break;
+        case Resource.CHARACTER: data = characterRenderer(r as Character); break;
         case Resource.CHARACTER_ABSOLUTE_SCORE:
         case Resource.CHARACTER_CROSS_SCORE:
         case Resource.PLANET_ABSOLUTE_SCORE:
@@ -159,3 +161,66 @@ export function getResourceImage(resource: Resource, name: string): string {
         + FOLDER_BY_RESOURCE[resource] + "/"
         + formatName(name) + EXTENSION_BY_RESOURCE[resource];
 }
+
+function individualLikeRatioToEmoji(r: number): string {
+    const likes = Math.round(r*4);
+    return RED_HEART.repeat(likes) + BLACK_HEART.repeat(4 - likes);
+}
+
+function crossLikeRatioToEmoji(r: number): string {
+    const refLikes = Math.round(r*4);
+    return GREEN_HEART.repeat(refLikes) + BLUE_HEART.repeat(4 - refLikes);
+}
+
+// sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
+// format: val => `${val}`,
+// field: row => row.name,
+export function renderAScore(resource: Resource, s: AbsoluteScore): unknown {
+    const likeRatio = s.likes / (s.dislikes + s.likes);
+    return {
+        "Name": DAO.getNameFromId(resource, s.id),
+        "Score": individualLikeRatioToEmoji(likeRatio),
+        "Likes": s.likes.toString(),
+        // Dislikes: s.dislikes,
+        "Ratio (%)": round(likeRatio * 100, 1),
+    };
+}
+
+export function renderCScore(resource: Resource, s: CrossScore): unknown {
+    const likeRatio = s.refLikes / (s.refLikes + s.cmpLikes);
+    return {
+        "Name 1": DAO.getNameFromId(resource, s.ref),
+        "Name 2": DAO.getNameFromId(resource, s.cmp),
+        "Score": crossLikeRatioToEmoji(likeRatio),
+        "Likes 1": s.refLikes,
+        "Likes 2": s.cmpLikes,
+        "Ratio (%)": round(likeRatio * 100, 1),
+    };
+}
+
+export function renderTabAbsoluteScores(tab: ScoreTab): unknown[] {
+    if (!tab.board?.absolute || !tab.board.absolute.length) { return []; }
+    return Array.from(tab.board.absolute.map(s => renderAScore(tab.resource, s as AbsoluteScore)));
+}
+
+export function renderTabCrossScores(tab: ScoreTab): unknown[] {
+    if (!tab.board?.absolute || !tab.board.cross.length) { return []; }
+    return Array.from(tab.board.cross.map(s => renderCScore(tab.resource, s as CrossScore)));
+}
+
+// export const SCORE_COLUMN_RENDERERS: {[key: number]: unknown} = {
+//     [Resource.PLANET_ABSOLUTE_SCORE]: aScoreRenderer(Resource.PLANET),
+//     [Resource.PLANET_CROSS_SCORE]: cScoreRenderer(Resource.PLANET),
+//     [Resource.CHARACTER_ABSOLUTE_SCORE]: aScoreRenderer(Resource.CHARACTER),
+//     [Resource.CHARACTER_CROSS_SCORE]: cScoreRenderer(Resource.CHARACTER),
+// };
+//
+// export const ABSOLUTE_SCORE_COLUMN_RENDERERS: {[key: number]: unknown} = {
+//     [Resource.PLANET]: aScoreRenderer(Resource.PLANET),
+//     [Resource.CHARACTER]: aScoreRenderer(Resource.CHARACTER),
+// };
+//
+// export const CROSS_SCORE_COLUMN_RENDERERS: {[key: number]: unknown} = {
+//     [Resource.PLANET]: cScoreRenderer(Resource.PLANET),
+//     [Resource.CHARACTER]: cScoreRenderer(Resource.CHARACTER),
+// };

@@ -25,3 +25,15 @@ export const $info       = "#00bfff";
 export const $warning    = "#f77205";
 
 export const $active = $primary;
+
+export const RED_HEART = "❤️";
+export const GREEN_HEART = "💚";
+export const BLUE_HEART = "💙";
+export const ORANGE_HEART = "🧡";
+export const YELLOW_HEART = "💛";
+export const BLACK_HEART = "🖤";
+
+// TODO: make sure the file encoding does not break the unicode representation of these guys
+export const KO_ICONS = ["🔪","💣","🗡️","☠","🔥","💉","🤜","💥"];
+
+export const randomKo = () => KO_ICONS[(Math.round(Math.random() * (KO_ICONS.length - 1)))];

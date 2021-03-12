@@ -43,6 +43,7 @@ export default class WsWrapper {
         //     .then(isConnected => {
         //         if (!isConnected) { throw new Error("Could not connect"); }
         //     }).catch(e => console.log(e));
+        [Action.GET, Action.UPDATE].forEach(action => this.handlersByResourceByAction[action] = {});
     }
 
     public registerHandler(action: Action, resource: Resource, handler: (messageBody: Uint8Array) => void): void {
@@ -64,10 +65,9 @@ export default class WsWrapper {
             LOG.info("Connecting to", this.url);
             NOTIFIER.info("Connecting to", this.url);
             this.onMessage(async (e: MessageEvent) => {
-                console.log("message received");
+                // console.log("message received");
                 const message = await messageEventToBytes(e);
                 const actionResource = topicBytesToActionResource(message.slice(0,4));
-                // LOG.debug("received message");
                 if (!(actionResource[0] in this.handlersByResourceByAction)
                     || !(actionResource[1] in this.handlersByResourceByAction[actionResource[0]])) {
                     LOG.error("websocket handler missing for action | resource ", actionResource[0], actionResource[1]);
@@ -142,7 +142,7 @@ export default class WsWrapper {
     public async send(action: Action, resource: Resource, body: Uint8Array): Promise<boolean> {
         if (!this.ws || !this.isConnected()) {
             // LOG.warn("websocket closed, reconnecting...");
-            // NOTIFIER.warn("websocket closed, reconnecting...");
+            // NOTIFIER.warn("websocket closed");
             return Promise.resolve(false);
             // if (!(await this.connect()) || !this.ws) { return Promise.resolve(false); }
         }

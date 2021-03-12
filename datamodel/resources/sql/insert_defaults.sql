@@ -236,7 +236,7 @@ INSERT INTO public.characters (name, height, mass, hair_color, skin_color, eye_c
     ('Arvel Crynyd',0,0,'BROWN','FAIR','BROWN',0,'MALE', public.planet_name_to_id('Unknown'), public.species_name_to_id('Human'),'REBEL_ALLIANCE'),
     ('Wicket Systri Warrick',88,20,'BROWN','BROWN','BROWN',-8,'MALE', public.planet_name_to_id('Endor'), public.species_name_to_id('Ewok'),'REBEL_ALLIANCE'),
     ('Nien Nunb',160,68,'NONE','GREY','BLACK',0,'MALE', public.planet_name_to_id('Sullust'), public.species_name_to_id('Sullustan'),'REBEL_ALLIANCE'),
-    ('Qui-Gon Jinn',193,89,'BROWN','FAIR','BLUE',-92,'MALE', public.planet_name_to_id('Unknown'), public.species_name_to_id('Human'),'JEDI_ORDER'),
+    ('Qui-Gon Jinn',193,89,'BROWN','FAIR','BLUE',-92,'MALE', public.planet_name_to_id('Coruscant'), public.species_name_to_id('Human'),'JEDI_ORDER'),
     ('Nute Gunray',191,90,'NONE','GREEN','RED',0,'MALE', public.planet_name_to_id('Cato Neimoidia'), public.species_name_to_id('Neimoidian'),'GALACTIC_REPUBLIC'),
     ('Finis Valorum',170,0,'BLOND','FAIR','BLUE',-91,'MALE', public.planet_name_to_id('Coruscant'), public.species_name_to_id('Human'),'GALACTIC_REPUBLIC'),
     ('Jar Jar Binks',196,66,'NONE','ORANGE','ORANGE',-52,'MALE', public.planet_name_to_id('Naboo'), public.species_name_to_id('Gungan'),'GALACTIC_REPUBLIC'),

@@ -47,10 +47,24 @@ export enum Resource {
     AFFILIATION = 8
 }
 
+export interface PlanetScoreBoard {
+    id: number, // useless, only just to match DAO
+    absolute: IPlanetAbsoluteScore[],
+    cross: IPlanetCrossScore[],
+}
+
+export interface CharacterScoreBoard {
+    id: number, // useless, only just to match DAO
+    absolute: ICharacterAbsoluteScore[],
+    cross: ICharacterCrossScore[],
+}
+
+export type ScoreBoard = PlanetScoreBoard | CharacterScoreBoard;
+
 export type ScoreResourceEntity
     = IPlanetAbsoluteScore | PlanetAbsoluteScore
     | IPlanetCrossScore | PlanetCrossScore
-    | ICharacterAbsoluteScore | CharacterAbsoluteScore;
+    | ICharacterAbsoluteScore | CharacterAbsoluteScore | ScoreBoard;
 
 export type NamedResourceEntity
     = IPlanet | Planet
@@ -58,6 +72,10 @@ export type NamedResourceEntity
     | ICharacter | Character;
 
 export type ResourceEntity = ScoreResourceEntity | NamedResourceEntity;
+
+export type AbsoluteScore = PlanetAbsoluteScore | CharacterAbsoluteScore;
+
+export type CrossScore = PlanetCrossScore | CharacterCrossScore;
 
 export const BASE_RESOURCES = [
     Resource.CHARACTER,
@@ -69,6 +87,11 @@ export const BASE_RESOURCES = [
     Resource.CHARACTER_CROSS_SCORE,
     // Resource.SCOREBOARD,
     // Resource.AFFILIATION,
+];
+
+export const CRUD_ACTIONS = [
+    Action.GET,
+    Action.UPDATE
 ];
 
 // const ENTITY_BY_RESOURCE: {[key: number]: ResourceEntity } = {
@@ -91,4 +114,21 @@ export const RESOURCE_BY_ENTITY: {[key: string]: Resource } = {
     [PlanetCrossScore.constructor.name]: Resource.PLANET_CROSS_SCORE,
     [CharacterAbsoluteScore.constructor.name]: Resource.CHARACTER_ABSOLUTE_SCORE,
     [CharacterCrossScore.constructor.name]: Resource.CHARACTER_CROSS_SCORE,
+};
+
+export const RESOURCE_BY_SCORE: {[key: number]: Resource } = {
+    [Resource.PLANET_ABSOLUTE_SCORE]: Resource.PLANET,
+    [Resource.PLANET_CROSS_SCORE]: Resource.PLANET,
+    [Resource.CHARACTER_ABSOLUTE_SCORE]: Resource.CHARACTER,
+    [Resource.CHARACTER_CROSS_SCORE]: Resource.CHARACTER,
+};
+
+export const ABSOLUTE_SCORE_BY_RESOURCE: {[key: number]: Resource } = {
+    [Resource.PLANET]: Resource.PLANET_ABSOLUTE_SCORE,
+    [Resource.CHARACTER]: Resource.CHARACTER_ABSOLUTE_SCORE,
+};
+
+export const CROSS_SCORE_BY_RESOURCE: {[key: number]: Resource } = {
+    [Resource.PLANET]: Resource.PLANET_CROSS_SCORE,
+    [Resource.CHARACTER]: Resource.CHARACTER_CROSS_SCORE,
 };

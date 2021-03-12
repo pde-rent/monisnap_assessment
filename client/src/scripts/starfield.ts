@@ -130,26 +130,26 @@ export default class Starfield {
             const s = this.stars[i];
             pixelX = (s.x - this.centerX) * (this.focalLength / s.z) + this.centerX;
             pixelY = (s.y - this.centerY) * (this.focalLength / s.z) + this.centerY;
-            pixelRadius = (this.focalLength / s.z) / 6 * s.scale;
+            pixelRadius = ((this.focalLength / s.z) / 3) * s.scale;
             this.ctx.fillStyle = s.color;
             this.ctx.beginPath();
             this.ctx.arc(pixelX, pixelY, pixelRadius, 0, 2 * Math.PI, false);
             this.ctx.fill();
         }
-        this.ctx.fillStyle = this.warp ? "rgba(0,0,3,0.02)" : "rgb(0,0,3)";
+        this.ctx.fillStyle = this.warp ? "rgba(0,0,3,0.03)" : "rgba(0,0,3,0.95)";
     };
 
+    // TODO: dynamically stretch on lower dpi for better performance and blur? / 2;
     // to change resolution
     public rescale(factor: number) {
         if (!this.canvas || !this.ctx) { return; }
-        const rect = this.canvas.getBoundingClientRect();
-        // this.canvas.height = rect.height; // TODO: stretch on lower dpi for better performance and blur? / 2;
-        // this.canvas.width = rect.width; // TODO: stretch on lower dpi for better performance and blur? / 2;
-        // Resize canvas and scale future draws.
-        console.log("rescale");
+        // const rect = this.canvas.getBoundingClientRect();
+        const rect = {
+            height: parseInt(this.canvas.style.height, 10),
+            width: parseInt(this.canvas.style.width, 10)
+        };
         this.canvas.width = Math.floor(rect.width * factor);
         this.canvas.height = Math.floor(rect.height * factor);
-        // if (!this.ctx) { this.ctx = this.canvas.getContext("2d"); }
         // this.ctx.scale(1/factor, 1/factor);
     }
 
