@@ -24,8 +24,6 @@ import {
     ICharacterCrossScore,
     PlanetCrossScore, Climate
 } from "src/generated/bundle";
-import {SERVER_IMAGES_ROOT} from "src/constants";
-import {LOG, NOTIFIER} from "src/scripts/utils";
 
 export enum Action {
     GET = 0,

@@ -17,3 +17,9 @@ target
 dist
 build
 
+# binaries
+*.exe
+*.dll
+*.a
+*.so
+./main

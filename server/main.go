@@ -1,10 +1,12 @@
 package main
 
 import (
+	. "assessment"
 	wsHandlers "assessment/server/handlers/ws"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"
 	"log"
+	"strconv"
 )
 
 func main() {
@@ -20,8 +22,8 @@ func main() {
 		return fiber.ErrUpgradeRequired
 	})
 
-	app.Get("/ws/v1/main", websocket.New(wsHandlers.MainWsHandler))
-	app.Static("/", "./client/public")
+	app.Get(GetWsRoot(), websocket.New(wsHandlers.MainWsHandler))
+	app.Static(ROOT_URL, GetStaticRoot())
 
-	log.Fatal(app.Listen(":8081"))
+	log.Fatal(app.Listen(":" + strconv.Itoa(PORT)))
 }

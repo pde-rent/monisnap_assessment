@@ -13,12 +13,12 @@ import {
 import {DAO} from "src/scripts/dao";
 import {
     getResourceImage, renderEntity, renderHeaders, renderUnits,
-    renderTabAbsoluteScores, renderTabCrossScores
+    renderTabAbsoluteScores, renderTabCrossScores, autoFlexClass
 } from "src/scripts/renderers";
 import {Climate, ICharacter, IPlanet, Affiliation} from "src/generated/bundle";
-import {NOTIFIER, sleep, waitImagesLoaded} from "src/scripts/utils";
+import {ASPECT_RATIO, getAspectRatio, isVertical, NOTIFIER, sleep, waitImagesLoaded} from "src/scripts/utils";
 import {ACTION_EMITTER} from "src/scripts/actions";
-import {$primary} from "src/constants";
+import {STYLE} from "src/constants";
 
 export interface AppTab {
     name: string,
@@ -49,7 +49,7 @@ const _appTabs: { [key: string]: AppTab } = {
         caption: 'Clash of the extended universe planets',
         icon: 'language',
         onclick: async () => {
-            Loading.show({ spinner: QSpinnerOrbit, spinnerColor: $primary });
+            Loading.show({ spinner: QSpinnerOrbit, spinnerColor: STYLE.active });
             await DAO.get([Resource.PLANET]).then(ok => { Loading.hide() });
         }
     }, 'Characters': {
@@ -60,7 +60,7 @@ const _appTabs: { [key: string]: AppTab } = {
         caption: 'Clash of the main saga characters',
         icon: 'face',
         onclick: async () => {
-            Loading.show({ spinner: QSpinnerOrbit, spinnerColor: $primary });
+            Loading.show({ spinner: QSpinnerOrbit, spinnerColor: STYLE.active });
             await DAO.get([Resource.CHARACTER]).then(ok => { Loading.hide() });
         }
     }, 'Scores': {
@@ -71,7 +71,7 @@ const _appTabs: { [key: string]: AppTab } = {
         caption: 'Scoreboards',
         icon: 'emoji_events',
         onclick: async () => {
-            Loading.show({ spinner: QSpinnerOrbit, spinnerColor: $primary });
+            Loading.show({ spinner: QSpinnerOrbit, spinnerColor: STYLE.active });
             const scoreBoards = await DAO.getScoreBoards();
             if (scoreBoards && scoreBoards.length > 1) {
                 _scoreTabs['Top Planets'].board = scoreBoards[0] as PlanetScoreBoard;
@@ -136,7 +136,9 @@ const resizeStarfield = () => {
     }
 };
 
-console.log(DAO, getRandomResources);
+window.addEventListener('resize', () => resizeStarfield());
+
+// console.log(DAO, getRandomResources);
 
 export default defineComponent({
     name: 'MainLayout',
@@ -155,14 +157,11 @@ export default defineComponent({
 
         console.log(DAO, getRandomResources);
 
-        window.onresize = () => { resizeStarfield(); };
-
-
         const roll = async (tab: AppTab, n = 2) => {
 
             if (!tab.entities || !tab.entities.length) { await tab.onclick(); }
             transiting.value = true;
-            Loading.show({ spinner: QSpinnerOrbit, spinnerColor: $primary });
+            Loading.show({ spinner: QSpinnerOrbit, spinnerColor: STYLE.active });
             await sleep(400);
             const namedResources = getRandomResources(tab, n);
             if (!namedResources) {
@@ -198,7 +197,8 @@ export default defineComponent({
             const canvasEl = document.querySelector("canvas#starfield") as HTMLCanvasElement;
             starfield.value.attach(canvasEl);
             resizeStarfield();
-            _starfield.warpFor(2000);
+            await DAO.connect();
+            // _starfield.warpFor(2000);
             return DAO.get([_appTabs[tabName.value].resource]);
         });
 
@@ -224,6 +224,8 @@ export default defineComponent({
             renderTabAbsoluteScores,
             renderTabCrossScores,
             ACTION_EMITTER,
+            ASPECT_RATIO,
+            autoFlexClass
         }
     },
 

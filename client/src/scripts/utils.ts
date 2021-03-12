@@ -1,11 +1,11 @@
 import { Notify } from 'quasar'
 import {Component} from "app/node_modules/vue";
 import {LooseDictionary} from "app/node_modules/quasar/dist/types/ts-helpers";
-import {util} from "app/node_modules/protobufjs";
-import resolve = util.path.resolve;
 
 const UTF8_DECODER = new TextDecoder("utf-8");
 const UTF8_ENCODER = new TextEncoder();
+
+export const getAspectRatio = () => screen.availWidth / screen.availHeight;
 
 export function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms))
@@ -151,3 +151,10 @@ export async function waitImagesLoaded(): Promise<void> {
     await Promise.all(promises);
     return Promise.resolve();
 }
+
+
+export let ASPECT_RATIO = getAspectRatio();
+
+window.addEventListener('resize', () => ASPECT_RATIO = getAspectRatio());
+
+export const isVertical = (ratio = 3 / 4) => { return ASPECT_RATIO < ratio; };

@@ -10,7 +10,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const {configure} = require('quasar/wrappers');
 
-module.exports = configure(function (/* ctx */) {
+module.exports = configure(function (ctx) {
+
     return {
         // https://quasar.dev/quasar-cli/supporting-ts
         supportTS: {
@@ -49,7 +50,8 @@ module.exports = configure(function (/* ctx */) {
         // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
         build: {
             vueRouterMode: 'hash', // available values: 'hash', 'history'
-
+            env: {},
+            publicPath: process.env.STATIC_ROOT + process.env.STATIC_PREFIX,
             // transpile: false,
 
             // Add dependencies for transpiling with Babel (Array of string/regex)
@@ -83,7 +85,7 @@ module.exports = configure(function (/* ctx */) {
         devServer: {
             https: false,
             port: 8080,
-            open: true // opens browser window automatically
+            open: true, // opens browser window automatically
         },
 
         // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework

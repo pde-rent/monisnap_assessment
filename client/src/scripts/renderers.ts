@@ -1,7 +1,7 @@
 import {Affiliation, Character, Climate, Color, Gender, Planet, Species} from "src/generated/bundle";
-import {BLACK_HEART, BLUE_HEART, GREEN_HEART, RED_HEART, SERVER_IMAGES_ROOT} from "src/constants";
+import {ICONS, ENV, STATIC_SERVER_ROOT} from "src/constants";
 import {AbsoluteScore, CrossScore, Resource, ResourceEntity, ScoreResourceEntity} from "src/scripts/resources";
-import {LOG, round} from "src/scripts/utils";
+import {isVertical, LOG, round} from "src/scripts/utils";
 import {DAO} from "src/scripts/dao";
 import {ScoreTab} from "layouts/MainLayout";
 
@@ -157,19 +157,19 @@ export function renderUnits(resource: Resource): string {
 }
 
 export function getResourceImage(resource: Resource, name: string): string {
-    return SERVER_IMAGES_ROOT + "/"
+    return STATIC_SERVER_ROOT + "/images/"
         + FOLDER_BY_RESOURCE[resource] + "/"
         + formatName(name) + EXTENSION_BY_RESOURCE[resource];
 }
 
 function individualLikeRatioToEmoji(r: number): string {
     const likes = Math.round(r*4);
-    return RED_HEART.repeat(likes) + BLACK_HEART.repeat(4 - likes);
+    return ICONS.redHeart.repeat(likes) + ICONS.blackHeart.repeat(4 - likes);
 }
 
 function crossLikeRatioToEmoji(r: number): string {
     const refLikes = Math.round(r*4);
-    return GREEN_HEART.repeat(refLikes) + BLUE_HEART.repeat(4 - refLikes);
+    return ICONS.greenHeart.repeat(refLikes) + ICONS.blueHeart.repeat(4 - refLikes);
 }
 
 // sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
@@ -224,3 +224,7 @@ export function renderTabCrossScores(tab: ScoreTab): unknown[] {
 //     [Resource.PLANET]: cScoreRenderer(Resource.PLANET),
 //     [Resource.CHARACTER]: cScoreRenderer(Resource.CHARACTER),
 // };
+
+export function autoFlexClass(thresholdRatio = 3/4): string {
+    return isVertical(thresholdRatio) ? 'flex-vertical' : 'flex-horizontal';
+}

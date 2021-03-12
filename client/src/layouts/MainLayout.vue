@@ -3,8 +3,7 @@
 
 <template lang="pug">
 
-.main-layout.full-size.font-title.flex-vertical.g-4.z0
-
+.main-layout.full-size.font-title.flex-vertical.z0
   // starfield background with warp
   canvas#starfield.abs.z1(:class="{ blur: starfield.warp }")
 
@@ -20,13 +19,13 @@
     .clash.full-size.flex-vertical.g-6.z2(:class="{ transiting: transiting }")
       // clash resources available >> start
       template(v-if="appTabs[tabName].entities && appTabs[tabName].entities.length > 1")
-        .inner.flex-horizontal.g-6
+        .inner.g-6(:class="autoFlexClass()")
           .entity-card.flex-vertical.g-5(
             v-for="(e, i) in appTabs[tabName].entities"
             @click="selectEntity(i)"
             @mouseenter="activeEntity = i"
             @mouseleave="activeEntity = -1"
-            :class="{ active: i === activeEntity, selected: transiting && i === selectedEntity }")
+            :class="{ active: i === activeEntity, selected: (transiting && i === selectedEntity) }")
             .name.font-primary.font-title.font-2rem.flex-vertical \#{{ e.id }} {{ e.name }}
             .pics
               img.primary.full-size(:src="appTabs[tabName].images[i]"
@@ -38,7 +37,7 @@
                 .homeworld(v-if="'homeworld' in appTabs[tabName].entities[i] && appTabs[tabName].entities[i].homeworld.name !== 'Unknown'")
                   q-tooltip(content-class="font-2rem") From {{ appTabs[tabName].entities[i].homeworld.name }}
                   img.full-size(:src="getResourceImage(Resource.PLANET, appTabs[tabName].entities[i].homeworld.name)")
-        .details.flex-horizontal.font-light.font-monospace.font-1p5rem.g-4.q-px-md
+        .details.font-light.font-monospace.font-1p5rem.g-4.q-px-md.flex-horizontal
           div(v-html="renderHeaders(appTabs[tabName].resource)")
           template(v-for="(e, i) in appTabs[tabName].entities")
             .entity.font-primary(v-html="renderEntity(appTabs[tabName].resource, e)"
@@ -73,7 +72,7 @@
           row-key="name")
 
   // bottom controls
-  .controls.flex-horizontal.full-width.fixed.bot.font-title.z3
+  .controls.full-width.fixed.bot.font-title.z3.flex-horizontal
     q-btn(style="font-size: 1.5rem" color="dark" text-color="primary"
       label="Warp"
       :icon="starfield.warp ? 'stop' : 'play_arrow'"

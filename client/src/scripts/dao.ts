@@ -70,7 +70,6 @@ export default class Dao {
     constructor(cacheExpirySeconds = 10) {
 
         this.cacheExpirySeconds = cacheExpirySeconds;
-        this.connect().then(ok => ok).catch(e => LOG.error(e));
 
         // init handlers and caches maps for further use
         CRUD_ACTIONS.forEach(action => this.handlersByResourceByAction[action] = {});

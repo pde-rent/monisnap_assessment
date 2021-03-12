@@ -1,5 +1,5 @@
 import {encode, intToBytes, LOG, NOTIFIER, sleep} from "./utils";
-import {SERVER_MAIN_WS_URL} from "src/constants";
+import {ENV, WS_SERVER_ROOT} from "src/constants";
 import {Action, Resource} from "src/scripts/resources";
 
 // we make both the resource and the action fit into a 32 bits (int) as message signature
@@ -36,7 +36,7 @@ export default class WsWrapper {
     // private onmessage: callback | null = null;
     private handlersByResourceByAction: {[key: number]: {[key: number]: (messageBody: Uint8Array) => void }} = {};
 
-    constructor(url: string = SERVER_MAIN_WS_URL, protocols?: string[]) {
+    constructor(url: string = WS_SERVER_ROOT, protocols?: string[]) {
         this.url = url;
         // FIXME: does not work as constructor is sync
         // this.ensureConnected()
