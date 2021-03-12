@@ -23,7 +23,7 @@ func main() {
 	})
 
 	app.Get(GetWsRoot(), websocket.New(wsHandlers.MainWsHandler))
-	app.Static(ROOT_URL, GetStaticRoot())
+	app.Static(GetStaticRoot(), STATIC_FOLDER_PATH)
 
 	log.Fatal(app.Listen(":" + strconv.Itoa(PORT)))
 }

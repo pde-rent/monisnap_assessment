@@ -86,6 +86,7 @@ module.exports = configure(function (ctx) {
             https: false,
             port: 8080,
             open: true, // opens browser window automatically
+            // publicPath: '/star-wars-clash'
         },
 
         // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework

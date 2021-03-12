@@ -16,5 +16,5 @@ func GetWsRoot() string {
 }
 
 func GetStaticRoot() string {
-	return STATIC_PREFIX + STATIC_FOLDER_PATH
+	return ROOT_URL + "/" + STATIC_PREFIX
 }
