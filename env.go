@@ -8,7 +8,7 @@ const (
 	STATIC_FOLDER_PATH = "./client/dist/spa"
 	ROOT_URL           = "/star-wars-clash"
 	STATIC_PREFIX      = ""
-	PORT               = 8081
+	PORT               = 443
 )
 
 func GetWsRoot() string {

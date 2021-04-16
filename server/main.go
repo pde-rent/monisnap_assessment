@@ -7,6 +7,7 @@ import (
 	"github.com/gofiber/websocket/v2"
 	"log"
 	"strconv"
+	"crypto/tls"
 )
 
 func main() {
@@ -25,5 +26,15 @@ func main() {
 	app.Get(GetWsRoot(), websocket.New(wsHandlers.MainWsHandler))
 	//app.Static(GetStaticRoot(), STATIC_FOLDER_PATH)
 	app.Static(GetStaticRoot(), STATIC_FOLDER_PATH)
-	log.Fatal(app.Listen(":" + strconv.Itoa(PORT)))
+	// Create tls certificate
+	cer, err := tls.LoadX509KeyPair(
+		"/etc/ssl/certs/drift.capital.pem",
+		"/etc/ssl/private/drift.capital.key")
+	if err != nil { log.Fatal(err) }
+	config := &tls.Config{Certificates: []tls.Certificate{cer}}
+	// Create custom listener
+	listener, err := tls.Listen("tcp", ":" + strconv.Itoa(PORT), config)
+	if err != nil { panic(err) }
+
+	log.Fatal(app.Listener(listener))
 }

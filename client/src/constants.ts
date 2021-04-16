@@ -1,38 +1,33 @@
-// import { ENV as WEBPACK_ENV } from "../quasar.conf";
-// export const ENV = WEBPACK_ENV as Env;
 
-export interface Env {
+namespace Server {
 
-    STATIC_PROTOCOL: "http" | "https",
-    WS_PROTOCOL: "ws" | "wss",
-    USE_SSL: boolean,
-    STATIC_ROOT: string,
-    WS_ROOT: string,
-    STATIC_PREFIX: string,
-    WS_VERSION: number,
+    // raw
+    export const DEV_MODE = process.env.NODE_ENV === 'development';
+    // export const DEV_MODE = Vue.config.devtools;
+    export const STATIC_PORT = process.env.PORT || 8080;
+    export const REST_PORT = STATIC_PORT;
+    export const WS_PORT = STATIC_PORT;
+    export const STATIC_PROTOCOL = "https"; // https if ssl is on
+    export const REST_PROTOCOL = "https";
+    export const WS_PROTOCOL = "ws"; // wss if ssl is on
+    export const STATIC_DOMAIN = DEV_MODE ? `localhost:${STATIC_PORT}/` : "xxx.com/";
+    export const REST_DOMAIN = DEV_MODE ? `localhost:${REST_PORT}/api/` : "xxx.com/api/";
+    export const WS_DOMAIN = DEV_MODE ? `localhost:${WS_PORT}/` : "xxx.com/ws";
+    export const STATIC_PREFIX = "";
+    export const REST_VERSION = 1;
+    export const WS_VERSION = 1;
+    // computed
+    export const STATIC_ROOT = STATIC_PROTOCOL + "://" + STATIC_DOMAIN + STATIC_PREFIX;
+    export const REST_ROOT = REST_PROTOCOL + "://" + REST_DOMAIN + "/v" + REST_VERSION.toString();
+    export const WS_ROOT = WS_PROTOCOL + "://" + WS_DOMAIN + "/v" + WS_VERSION.toString();
+
 }
 
-export const DEV_MODE = process.env.NODE_ENV === 'development';
-// export const DEV_MODE = Vue.config.devtools;
-
-export const ENV: Env = {
-
-    STATIC_PROTOCOL: "http", // https if ssl is on
-    WS_PROTOCOL: "ws", // wss if ssl is on
-    USE_SSL: false,
-    STATIC_ROOT: DEV_MODE ? 'localhost:8081/star-wars-clash' : "drift.capital/star-wars-clash",
-    WS_ROOT: DEV_MODE ? 'localhost:8081/star-wars-clash/ws' : "drift.capital/star-wars-clash/ws",
-    STATIC_PREFIX: "",
-    WS_VERSION: 1,
-};
-
-export const STATIC_SERVER_ROOT = ENV.STATIC_PROTOCOL + "://" + ENV.STATIC_ROOT + ENV.STATIC_PREFIX;
-export const WS_SERVER_ROOT = ENV.WS_PROTOCOL + "://" + ENV.WS_ROOT + "/v" + ENV.WS_VERSION.toString();
-
+// make sure these variables match their constants.scss counterparts
 export const STYLE = {
 
-    fontTitle: "Distant Galaxy",
-    fontBody: "Righteous",
+    fontTitle: "Space Grotesk",
+    fontBody: "Nunito",
 
     black: "rgb(0,0,0)",
     white: "rgb(254,254,254)",
@@ -55,15 +50,5 @@ export const STYLE = {
     warning: "#f77205"
 };
 
-// TODO: make sure the file encoding does not break the unicode representation of these guys
-export const ICONS = {
-    clash: ["💣", "☠", "🔥", "💥"],
-    redHeart: "❤️",
-    greenHeart: "💚",
-    blueHeart: "💙",
-    orangeHeart: "🧡",
-    yellowHeart: "💛",
-    blackHeart: "🖤"
-};
-
-export const randomKo = () => ICONS.clash[(Math.round(Math.random() * (ICONS.clash.length - 1)))];
+// TODO: make sure the file encoding does not break the unicode representation of these
+export const UNICODE_ICONS = {};
