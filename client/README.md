@@ -1,4 +1,4 @@
-# assessment-client (assessment)
+# star-wars-clash (assessment)
 
 A Star Wars Face-Off
 

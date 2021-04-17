@@ -2,7 +2,7 @@
   "name": "assessment",
   "version": "0.0.1",
   "description": "A Star Wars Face-Off",
-  "productName": "assessment-client",
+  "productName": "star-wars-clash",
   "author": "paul.ed.de.renty@gmail.com",
   "private": true,
   "scripts": {

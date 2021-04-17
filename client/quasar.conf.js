@@ -145,8 +145,8 @@ module.exports = configure(function (ctx) {
             },
 
             manifest: {
-                name: 'assessment-client',
-                short_name: 'assessment-client',
+                name: 'star-wars-clash',
+                short_name: 'star-wars-clash',
                 description: 'A Star Wars Face-Off',
                 display: 'standalone',
                 orientation: 'portrait',
