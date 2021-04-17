@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "assessment/datamodel/generated/proto/entities";
+option go_package = "star_wars_clash/datamodel/generated/proto/entities";
 
 import "entities/Planet.proto";
 import "entities/Species.proto";

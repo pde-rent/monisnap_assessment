@@ -4,93 +4,87 @@ package character
 
 import (
 
-    // external dependencies
-    "log"
-    "github.com/jackc/pgx/v4"
-    "github.com/golang/protobuf/proto"
+	// external dependencies
+	"log"
 
-    // project dependencies
-	"assessment/datamodel/adapter"
-    "assessment/datamodel/types"
+	"github.com/golang/protobuf/proto"
+	"github.com/jackc/pgx/v4"
 
-    // dao dependencies
-    . "assessment/datamodel/generated/proto/entities"
-    "github.com/jackc/pgtype"
-    "assessment/datamodel/generated/dao/species"
-    "assessment/datamodel/generated/dao/planet"
-    . "assessment/datamodel/generated/proto/enums"
+	// project dependencies
+	"star_wars_clash/datamodel/adapter"
+	"star_wars_clash/datamodel/types"
+
+	// dao dependencies
+	"star_wars_clash/datamodel/generated/dao/planet"
+	"star_wars_clash/datamodel/generated/dao/species"
+	. "star_wars_clash/datamodel/generated/proto/entities"
+	. "star_wars_clash/datamodel/generated/proto/enums"
+
+	"github.com/jackc/pgtype"
 )
 
 const (
-    TABLE_NAME = "characters"
+	TABLE_NAME = "characters"
 
-    ID = "id"
-    NAME = "name"
-    HEIGHT = "height"
-    MASS = "mass"
-    HAIR_COLOR = "hair_color"
-    SKIN_COLOR = "skin_color"
-    EYE_COLOR = "eye_color"
-    BIRTH_YEAR = "birth_year"
-    GENDER = "gender"
-    HOMEWORLD = "homeworld"
-    SPECIES = "species"
-    MAIN_AFFILIATION = "main_affiliation"
-
+	ID               = "id"
+	NAME             = "name"
+	HEIGHT           = "height"
+	MASS             = "mass"
+	HAIR_COLOR       = "hair_color"
+	SKIN_COLOR       = "skin_color"
+	EYE_COLOR        = "eye_color"
+	BIRTH_YEAR       = "birth_year"
+	GENDER           = "gender"
+	HOMEWORLD        = "homeworld"
+	SPECIES          = "species"
+	MAIN_AFFILIATION = "main_affiliation"
 )
 
 var COLUMNS_TO_CREATE = []string{
-    NAME,
-    HEIGHT,
-    MASS,
-    HAIR_COLOR,
-    SKIN_COLOR,
-    EYE_COLOR,
-    BIRTH_YEAR,
-    GENDER,
-    HOMEWORLD,
-    SPECIES,
-    MAIN_AFFILIATION,
-
+	NAME,
+	HEIGHT,
+	MASS,
+	HAIR_COLOR,
+	SKIN_COLOR,
+	EYE_COLOR,
+	BIRTH_YEAR,
+	GENDER,
+	HOMEWORLD,
+	SPECIES,
+	MAIN_AFFILIATION,
 }
 
 var COLUMNS_TO_RETURN = []string{
-    ID,
-
+	ID,
 }
 
 var COLUMNS_TO_UPDATE = []string{
-    ID,
-    NAME,
-    HEIGHT,
-    MASS,
-    HAIR_COLOR,
-    SKIN_COLOR,
-    EYE_COLOR,
-    BIRTH_YEAR,
-    GENDER,
-    HOMEWORLD,
-    SPECIES,
-    MAIN_AFFILIATION,
-
+	ID,
+	NAME,
+	HEIGHT,
+	MASS,
+	HAIR_COLOR,
+	SKIN_COLOR,
+	EYE_COLOR,
+	BIRTH_YEAR,
+	GENDER,
+	HOMEWORLD,
+	SPECIES,
+	MAIN_AFFILIATION,
 }
 
-var DAO_LINKS map[string]types.Link = map[string]types.Link{
-    
-}
+var DAO_LINKS map[string]types.Link = map[string]types.Link{}
 
-var PRIMITIVE_LINKS map[string]types.Link = map[string]types.Link{
-    
-}
+var PRIMITIVE_LINKS map[string]types.Link = map[string]types.Link{}
 
 func fetchLinkRows(el *Character, l types.Link) *pgx.Rows {
-    return adapter.SelectIn(l.Table, []string{ l.Target }, l.By, el.Id)
+	return adapter.SelectIn(l.Table, []string{l.Target}, l.By, el.Id)
 }
 
 func fetchLinks(el *Character) {
-    // DAO_LINKS >> entity = true
+	// DAO_LINKS >> entity = true
 
-    // PRIMITIVE_LINKS >> entity = false
+	// PRIMITIVE_LINKS >> entity = false
 
 }
 
@@ -111,19 +105,18 @@ const PRINTER = `
 
 func getStorable(el *Character) []interface{} {
 	return []interface{}{
-        el.Name,
-        el.Height,
-        el.Mass,
-        el.HairColor,
-        el.SkinColor,
-        el.EyeColor,
-        el.BirthYear,
-        el.Gender,
-        el.Homeworld.Id,
-        el.Species.Id,
-        el.MainAffiliation,
-
-    }
+		el.Name,
+		el.Height,
+		el.Mass,
+		el.HairColor,
+		el.SkinColor,
+		el.EyeColor,
+		el.BirthYear,
+		el.Gender,
+		el.Homeworld.Id,
+		el.Species.Id,
+		el.MainAffiliation,
+	}
 }
 
 func getStorableList(els ...*Character) [][]interface{} {
@@ -140,8 +133,8 @@ var CACHE = cacheInit()
 func cacheInit() map[string]map[interface{}]*Character {
 
 	c := map[string]map[interface{}]*Character{}
-    c[ID] = map[interface{}]*Character{}
-    c[NAME] = map[interface{}]*Character{}
+	c[ID] = map[interface{}]*Character{}
+	c[NAME] = map[interface{}]*Character{}
 
 	return c
 }
@@ -149,8 +142,8 @@ func cacheInit() map[string]map[interface{}]*Character {
 func addToCache(els ...*Character) {
 
 	for _, el := range els {
-        CACHE[ID][el.Id] = el
-        CACHE[NAME][string(el.Name)] = el
+		CACHE[ID][el.Id] = el
+		CACHE[NAME][string(el.Name)] = el
 
 		// fmt.Println("cached: ", string(el.Email))
 	}
@@ -173,8 +166,8 @@ func removeFromCache(els ...*Character) bool {
 
 	for _, el := range els {
 		if el, ok := CACHE[ID][el.Id]; ok {
-            delete(CACHE[ID], el.Id)
-            delete(CACHE[NAME], el.Name)
+			delete(CACHE[ID], el.Id)
+			delete(CACHE[NAME], el.Name)
 
 			return true
 		}
@@ -190,61 +183,61 @@ func removeFromCacheBy(by string, vals ...interface{}) bool {
 
 func FromRow(rows *pgx.Rows) *Character {
 
-    var id uint64
-    var name pgtype.Varchar
-    var height int32
-    var mass int32
-    var hairColor string
-    var skinColor string
-    var eyeColor string
-    var birthYear float32
-    var gender string
-    var homeworldId uint64
-    var speciesId uint64
-    var mainAffiliation string
-
+	var id uint64
+	var name pgtype.Varchar
+	var height int32
+	var mass int32
+	var hairColor string
+	var skinColor string
+	var eyeColor string
+	var birthYear float32
+	var gender string
+	var homeworldId uint64
+	var speciesId uint64
+	var mainAffiliation string
 
 	err := (*rows).Scan(
-        &id,
-        &name,
-        &height,
-        &mass,
-        &hairColor,
-        &skinColor,
-        &eyeColor,
-        &birthYear,
-        &gender,
-        &homeworldId,
-        &speciesId,
-        &mainAffiliation,
-
-    )
+		&id,
+		&name,
+		&height,
+		&mass,
+		&hairColor,
+		&skinColor,
+		&eyeColor,
+		&birthYear,
+		&gender,
+		&homeworldId,
+		&speciesId,
+		&mainAffiliation,
+	)
 	if err != nil {
 		log.Print(err)
 		return nil
 	}
 
 	return &Character{
-        Id: id,
-        Name: name.String,
-        Height: height,
-        Mass: mass,
-        HairColor: Color(Color_value[hairColor]),
-        SkinColor: Color(Color_value[skinColor]),
-        EyeColor: Color(Color_value[eyeColor]),
-        BirthYear: birthYear,
-        Gender: Gender(Gender_value[gender]),
-        Homeworld: planet.GetBy("id", homeworldId)[0],
-        Species: species.GetBy("id", speciesId)[0],
-        MainAffiliation: Affiliation(Affiliation_value[mainAffiliation]),
-
-    }
+		Id:              id,
+		Name:            name.String,
+		Height:          height,
+		Mass:            mass,
+		HairColor:       Color(Color_value[hairColor]),
+		SkinColor:       Color(Color_value[skinColor]),
+		EyeColor:        Color(Color_value[eyeColor]),
+		BirthYear:       birthYear,
+		Gender:          Gender(Gender_value[gender]),
+		Homeworld:       planet.GetBy("id", homeworldId)[0],
+		Species:         species.GetBy("id", speciesId)[0],
+		MainAffiliation: Affiliation(Affiliation_value[mainAffiliation]),
+	}
 }
 
 func GetBytes(el *Character) []byte {
 
 	b, err := proto.Marshal(el)
-	if err != nil { log.Print(err); return nil }
+	if err != nil {
+		log.Print(err)
+		return nil
+	}
 	return b
 }
 
@@ -252,7 +245,10 @@ func GetBytes(el *Character) []byte {
 func FromBytes(bytes []byte) *Character {
 
 	u := &Character{}
-	if err:= proto.Unmarshal(bytes, u); err != nil { log.Print(err); return nil }
+	if err := proto.Unmarshal(bytes, u); err != nil {
+		log.Print(err)
+		return nil
+	}
 	return u
 }
 
@@ -260,13 +256,19 @@ func FromBytes(bytes []byte) *Character {
 func ListFromBytes(bl [][]byte) []*Character {
 
 	var l []*Character
-	for _, b := range bl { if el := FromBytes(b); el != nil { l = append(l, el) } }
+	for _, b := range bl {
+		if el := FromBytes(b); el != nil {
+			l = append(l, el)
+		}
+	}
 	return l
 }
 
 // prints entities from serialized bytes
 func Print(els ...*Character) {
-	for _, el := range els { log.Printf(PRINTER, getStorable(el)...) }
+	for _, el := range els {
+		log.Printf(PRINTER, getStorable(el)...)
+	}
 }
 
 // prints entity from serialized bytes
@@ -276,7 +278,9 @@ func PrintFromBytes(b ...[]byte) {
 
 // store to database from entity
 func Store(el *Character, cache bool) uint64 {
-	if cache { addToCache(el) }
+	if cache {
+		addToCache(el)
+	}
 	return adapter.Store(TABLE_NAME, COLUMNS_TO_CREATE, COLUMNS_TO_RETURN, getStorable(el)...)
 }
 
@@ -299,7 +303,9 @@ func DeleteBy(by string, vals ...interface{}) int64 {
 func Delete(els ...*Character) int64 {
 
 	var ids []interface{}
-	for _, el := range els { ids = append(ids, el.Id) }
+	for _, el := range els {
+		ids = append(ids, el.Id)
+	}
 	removeFromCache(els...)
 	return DeleteBy(ID, ids...)
 }
@@ -307,23 +313,27 @@ func Delete(els ...*Character) int64 {
 // update entity in cache and database
 func UpdateOne(el *Character) int64 {
 
-    executed := int64(0)
-    if el.Id == 0 {
-        // new element >> store
-        el.Id = Store(el, true)
-        executed = 1
-    } else {
-        executed = adapter.UpdateOneEquals(TABLE_NAME, COLUMNS_TO_UPDATE, append([]interface{}{ el.Id }, getStorable(el)...), ID, el.Id)
-    }
-    addToCache(el)
-    return executed
+	executed := int64(0)
+	if el.Id == 0 {
+		// new element >> store
+		el.Id = Store(el, true)
+		executed = 1
+	} else {
+		executed = adapter.UpdateOneEquals(TABLE_NAME, COLUMNS_TO_UPDATE, append([]interface{}{el.Id}, getStorable(el)...), ID, el.Id)
+	}
+	addToCache(el)
+	return executed
 }
 
 // create entities from query resultset
 func FromRows(rows *pgx.Rows) []*Character {
-	if rows == nil || *rows == nil { return nil }
+	if rows == nil || *rows == nil {
+		return nil
+	}
 	var list []*Character
-	for (*rows).Next() { list = append(list, FromRow(rows)) }
+	for (*rows).Next() {
+		list = append(list, FromRow(rows))
+	}
 	return list
 }
 
@@ -335,8 +345,8 @@ func FetchBy(by string, vals ...interface{}) []*Character {
 
 // create entities from database query
 func FetchAll() []*Character {
-    rows := adapter.SelectAll(TABLE_NAME, nil)
-    return FromRows(rows)
+	rows := adapter.SelectAll(TABLE_NAME, nil)
+	return FromRows(rows)
 }
 
 // create entities from cache or database
@@ -362,11 +372,11 @@ func GetBy(by string, vals ...interface{}) []*Character {
 
 func GetOneBy(by string, val interface{}) *Character {
 	l := GetBy(by, val)
-	if len(l) > 0 { return GetBy(by, val)[0] }
+	if len(l) > 0 {
+		return GetBy(by, val)[0]
+	}
 	return nil
 }
-
-
 
 func TestDao() {
 

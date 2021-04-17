@@ -499,7 +499,7 @@ def desc_to_mapping(desc: EntityDescription) -> dict:
         go_attribute = to_pascal(c.field_name)
         if c.is_date:
             go_storable = f"EpochToTimestampTz(el.{go_attribute})"
-            desc.external_dependencies.add('. "assessment/utils"')
+            desc.external_dependencies.add('. "star_wars_clash/utils"')
         else:
             go_storable = f"el.{go_attribute}"
         # TODO: check if enums <> varchar work automatically
@@ -549,7 +549,7 @@ def desc_to_mapping(desc: EntityDescription) -> dict:
         By: "{c.link.by}",
         Target: "{c.link.target}"}},"""
             go_dao_package_name = f"{to_snake(c.type)}"
-            desc.external_dependencies.add('. "assessment/utils"')
+            desc.external_dependencies.add('. "star_wars_clash/utils"')
             if c.is_entity:
                 dao_links += go_link_str
                 fetch_dao_links += f'    el.{go_attribute} = {go_dao_package_name}.GetBy({go_dao_package_name}.ID, adapter.RowsToUint64(fetchLinkRows(el, DAO_LINKS["{c.type}"])))\n'
@@ -576,15 +576,15 @@ def desc_to_mapping(desc: EntityDescription) -> dict:
         default_exports += f'var {default.name} = GetOneBy("{default.by}", "{default.val}")\n'
 
     imports: List[str] = []
-    imports.append('. "assessment/datamodel/generated/proto/entities"')
+    imports.append('. "star_wars_clash/datamodel/generated/proto/entities"')
     if len(desc.external_dependencies) > 0:
         for dep in desc.external_dependencies:
             imports.append(dep)
     if len(desc.entity_dependencies) > 0:
         for dep in desc.entity_dependencies:
-            imports.append(f'"assessment/datamodel/generated/dao/{dep}"')
+            imports.append(f'"star_wars_clash/datamodel/generated/dao/{dep}"')
     if len(desc.enum_dependencies) > 0:
-        imports.append('. "assessment/datamodel/generated/proto/enums"')
+        imports.append('. "star_wars_clash/datamodel/generated/proto/enums"')
 
     # TODO: fix this for composite primary keys (duplicate columns in the update)
     ctu = ctr + cts

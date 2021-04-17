@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "assessment/datamodel/generated/proto/enums";
+option go_package = "star_wars_clash/datamodel/generated/proto/enums";
 
 // type:enum name:climate
 enum Climate {

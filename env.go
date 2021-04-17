@@ -1,4 +1,4 @@
-package assessment
+package star_wars_clash
 
 import "strconv"
 

@@ -30,9 +30,9 @@ echo "to generate .js and .d.ts bindings, please see the script for ./pbjs ./pbt
 
 echo "fixing compilation paths ..."
 # fix package location issues
-mv ./generated/proto/assessment/datamodel/generated/proto/enums/* ./generated/proto/enums/
-mv ./generated/proto/assessment/datamodel/generated/proto/entities/* ./generated/proto/entities/
-rm -rf ./generated/proto/assessment/
+mv ./generated/proto/star_wars_clash/datamodel/generated/proto/enums/* ./generated/proto/enums/
+mv ./generated/proto/star_wars_clash/datamodel/generated/proto/entities/* ./generated/proto/entities/
+rm -rf ./generated/proto/star_wars_clash/
 
 echo "renaming compiled files ..."
 rename -f 's/.pb.go/.go/g' ./generated/proto/*/*

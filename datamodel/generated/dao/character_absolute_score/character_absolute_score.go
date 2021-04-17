@@ -4,65 +4,58 @@ package character_absolute_score
 
 import (
 
-    // external dependencies
-    "log"
-    "github.com/jackc/pgx/v4"
-    "github.com/golang/protobuf/proto"
+	// external dependencies
+	"log"
 
-    // project dependencies
-	"assessment/datamodel/adapter"
-    "assessment/datamodel/types"
+	"github.com/golang/protobuf/proto"
+	"github.com/jackc/pgx/v4"
 
-    // dao dependencies
-    . "assessment/datamodel/generated/proto/entities"
+	// project dependencies
+	"star_wars_clash/datamodel/adapter"
+	"star_wars_clash/datamodel/types"
+
+	// dao dependencies
+	. "star_wars_clash/datamodel/generated/proto/entities"
 )
 
 const (
-    TABLE_NAME = "character_absolute_scores"
+	TABLE_NAME = "character_absolute_scores"
 
-    ID = "id"
-    REF = "ref"
-    LIKES = "likes"
-    DISLIKES = "dislikes"
-
+	ID       = "id"
+	REF      = "ref"
+	LIKES    = "likes"
+	DISLIKES = "dislikes"
 )
 
 var COLUMNS_TO_CREATE = []string{
-    REF,
-    LIKES,
-    DISLIKES,
-
+	REF,
+	LIKES,
+	DISLIKES,
 }
 
 var COLUMNS_TO_RETURN = []string{
-    ID,
-
+	ID,
 }
 
 var COLUMNS_TO_UPDATE = []string{
-    ID,
-    REF,
-    LIKES,
-    DISLIKES,
-
+	ID,
+	REF,
+	LIKES,
+	DISLIKES,
 }
 
-var DAO_LINKS map[string]types.Link = map[string]types.Link{
-    
-}
+var DAO_LINKS map[string]types.Link = map[string]types.Link{}
 
-var PRIMITIVE_LINKS map[string]types.Link = map[string]types.Link{
-    
-}
+var PRIMITIVE_LINKS map[string]types.Link = map[string]types.Link{}
 
 func fetchLinkRows(el *CharacterAbsoluteScore, l types.Link) *pgx.Rows {
-    return adapter.SelectIn(l.Table, []string{ l.Target }, l.By, el.Id)
+	return adapter.SelectIn(l.Table, []string{l.Target}, l.By, el.Id)
 }
 
 func fetchLinks(el *CharacterAbsoluteScore) {
-    // DAO_LINKS >> entity = true
+	// DAO_LINKS >> entity = true
 
-    // PRIMITIVE_LINKS >> entity = false
+	// PRIMITIVE_LINKS >> entity = false
 
 }
 
@@ -75,11 +68,10 @@ const PRINTER = `
 
 func getStorable(el *CharacterAbsoluteScore) []interface{} {
 	return []interface{}{
-        el.Ref,
-        el.Likes,
-        el.Dislikes,
-
-    }
+		el.Ref,
+		el.Likes,
+		el.Dislikes,
+	}
 }
 
 func getStorableList(els ...*CharacterAbsoluteScore) [][]interface{} {
@@ -96,8 +88,8 @@ var CACHE = cacheInit()
 func cacheInit() map[string]map[interface{}]*CharacterAbsoluteScore {
 
 	c := map[string]map[interface{}]*CharacterAbsoluteScore{}
-    c[ID] = map[interface{}]*CharacterAbsoluteScore{}
-    c[REF] = map[interface{}]*CharacterAbsoluteScore{}
+	c[ID] = map[interface{}]*CharacterAbsoluteScore{}
+	c[REF] = map[interface{}]*CharacterAbsoluteScore{}
 
 	return c
 }
@@ -105,8 +97,8 @@ func cacheInit() map[string]map[interface{}]*CharacterAbsoluteScore {
 func addToCache(els ...*CharacterAbsoluteScore) {
 
 	for _, el := range els {
-        CACHE[ID][el.Id] = el
-        CACHE[REF][el.Ref] = el
+		CACHE[ID][el.Id] = el
+		CACHE[REF][el.Ref] = el
 
 		// fmt.Println("cached: ", string(el.Email))
 	}
@@ -129,8 +121,8 @@ func removeFromCache(els ...*CharacterAbsoluteScore) bool {
 
 	for _, el := range els {
 		if el, ok := CACHE[ID][el.Id]; ok {
-            delete(CACHE[ID], el.Id)
-            delete(CACHE[REF], el.Ref)
+			delete(CACHE[ID], el.Id)
+			delete(CACHE[REF], el.Ref)
 
 			return true
 		}
@@ -146,37 +138,37 @@ func removeFromCacheBy(by string, vals ...interface{}) bool {
 
 func FromRow(rows *pgx.Rows) *CharacterAbsoluteScore {
 
-    var id uint64
-    var ref uint64
-    var likes uint32
-    var dislikes uint32
-
+	var id uint64
+	var ref uint64
+	var likes uint32
+	var dislikes uint32
 
 	err := (*rows).Scan(
-        &id,
-        &ref,
-        &likes,
-        &dislikes,
-
-    )
+		&id,
+		&ref,
+		&likes,
+		&dislikes,
+	)
 	if err != nil {
 		log.Print(err)
 		return nil
 	}
 
 	return &CharacterAbsoluteScore{
-        Id: id,
-        Ref: ref,
-        Likes: likes,
-        Dislikes: dislikes,
-
-    }
+		Id:       id,
+		Ref:      ref,
+		Likes:    likes,
+		Dislikes: dislikes,
+	}
 }
 
 func GetBytes(el *CharacterAbsoluteScore) []byte {
 
 	b, err := proto.Marshal(el)
-	if err != nil { log.Print(err); return nil }
+	if err != nil {
+		log.Print(err)
+		return nil
+	}
 	return b
 }
 
@@ -184,7 +176,10 @@ func GetBytes(el *CharacterAbsoluteScore) []byte {
 func FromBytes(bytes []byte) *CharacterAbsoluteScore {
 
 	u := &CharacterAbsoluteScore{}
-	if err:= proto.Unmarshal(bytes, u); err != nil { log.Print(err); return nil }
+	if err := proto.Unmarshal(bytes, u); err != nil {
+		log.Print(err)
+		return nil
+	}
 	return u
 }
 
@@ -192,13 +187,19 @@ func FromBytes(bytes []byte) *CharacterAbsoluteScore {
 func ListFromBytes(bl [][]byte) []*CharacterAbsoluteScore {
 
 	var l []*CharacterAbsoluteScore
-	for _, b := range bl { if el := FromBytes(b); el != nil { l = append(l, el) } }
+	for _, b := range bl {
+		if el := FromBytes(b); el != nil {
+			l = append(l, el)
+		}
+	}
 	return l
 }
 
 // prints entities from serialized bytes
 func Print(els ...*CharacterAbsoluteScore) {
-	for _, el := range els { log.Printf(PRINTER, getStorable(el)...) }
+	for _, el := range els {
+		log.Printf(PRINTER, getStorable(el)...)
+	}
 }
 
 // prints entity from serialized bytes
@@ -208,7 +209,9 @@ func PrintFromBytes(b ...[]byte) {
 
 // store to database from entity
 func Store(el *CharacterAbsoluteScore, cache bool) uint64 {
-	if cache { addToCache(el) }
+	if cache {
+		addToCache(el)
+	}
 	return adapter.Store(TABLE_NAME, COLUMNS_TO_CREATE, COLUMNS_TO_RETURN, getStorable(el)...)
 }
 
@@ -231,7 +234,9 @@ func DeleteBy(by string, vals ...interface{}) int64 {
 func Delete(els ...*CharacterAbsoluteScore) int64 {
 
 	var ids []interface{}
-	for _, el := range els { ids = append(ids, el.Id) }
+	for _, el := range els {
+		ids = append(ids, el.Id)
+	}
 	removeFromCache(els...)
 	return DeleteBy(ID, ids...)
 }
@@ -239,23 +244,27 @@ func Delete(els ...*CharacterAbsoluteScore) int64 {
 // update entity in cache and database
 func UpdateOne(el *CharacterAbsoluteScore) int64 {
 
-    executed := int64(0)
-    if el.Id == 0 {
-        // new element >> store
-        el.Id = Store(el, true)
-        executed = 1
-    } else {
-        executed = adapter.UpdateOneEquals(TABLE_NAME, COLUMNS_TO_UPDATE, append([]interface{}{ el.Id }, getStorable(el)...), ID, el.Id)
-    }
-    addToCache(el)
-    return executed
+	executed := int64(0)
+	if el.Id == 0 {
+		// new element >> store
+		el.Id = Store(el, true)
+		executed = 1
+	} else {
+		executed = adapter.UpdateOneEquals(TABLE_NAME, COLUMNS_TO_UPDATE, append([]interface{}{el.Id}, getStorable(el)...), ID, el.Id)
+	}
+	addToCache(el)
+	return executed
 }
 
 // create entities from query resultset
 func FromRows(rows *pgx.Rows) []*CharacterAbsoluteScore {
-	if rows == nil || *rows == nil { return nil }
+	if rows == nil || *rows == nil {
+		return nil
+	}
 	var list []*CharacterAbsoluteScore
-	for (*rows).Next() { list = append(list, FromRow(rows)) }
+	for (*rows).Next() {
+		list = append(list, FromRow(rows))
+	}
 	return list
 }
 
@@ -267,8 +276,8 @@ func FetchBy(by string, vals ...interface{}) []*CharacterAbsoluteScore {
 
 // create entities from database query
 func FetchAll() []*CharacterAbsoluteScore {
-    rows := adapter.SelectAll(TABLE_NAME, nil)
-    return FromRows(rows)
+	rows := adapter.SelectAll(TABLE_NAME, nil)
+	return FromRows(rows)
 }
 
 // create entities from cache or database
@@ -294,11 +303,11 @@ func GetBy(by string, vals ...interface{}) []*CharacterAbsoluteScore {
 
 func GetOneBy(by string, val interface{}) *CharacterAbsoluteScore {
 	l := GetBy(by, val)
-	if len(l) > 0 { return GetBy(by, val)[0] }
+	if len(l) > 0 {
+		return GetBy(by, val)[0]
+	}
 	return nil
 }
-
-
 
 func TestDao() {
 

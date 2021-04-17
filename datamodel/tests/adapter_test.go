@@ -1,7 +1,6 @@
 package tests
 
 import (
-	"assessment/datamodel/adapter"
 	"testing"
 )
 

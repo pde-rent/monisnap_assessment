@@ -4,8 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/jackc/pgtype"
-	"golang.org/x/crypto/ssh/terminal"
 	"log"
 	"os"
 	"path/filepath"
@@ -14,12 +12,15 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/jackc/pgtype"
+	"golang.org/x/crypto/ssh/terminal"
+
 	//fb "github.com/google/flatbuffers/go"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 
 	// project dependencies
-	"assessment/utils"
+	"star_wars_clash/utils"
 )
 
 var err error = nil
@@ -102,8 +103,10 @@ func sqlUpdateArgs(columns []string) string {
 
 	str := ""
 	for i := 0; i < len(columns); i++ {
-		str +=  columns[i] + " = " + "$" + strconv.Itoa(i + 1)
-		if i < len(columns) -1 { str += ", " }
+		str += columns[i] + " = " + "$" + strconv.Itoa(i+1)
+		if i < len(columns)-1 {
+			str += ", "
+		}
 	}
 	return str
 }
@@ -222,7 +225,7 @@ func updateQuery(tableName string, columns []string, columnToFilter, filterOpera
 
 	return fmt.Sprintf(
 		"update %s set %s where %s %s $%d",
-		tableName, sqlUpdateArgs(columns), columnToFilter, filterOperator, len(columns) + 1)
+		tableName, sqlUpdateArgs(columns), columnToFilter, filterOperator, len(columns)+1)
 }
 
 func RowsToUint32(rows *pgx.Rows) []uint32 {

@@ -1,12 +1,12 @@
 package test
 
 import (
-	characterDao "assessment/datamodel/generated/dao/character"
-	charCScoreDao "assessment/datamodel/generated/dao/character_cross_score"
-	planetDao "assessment/datamodel/generated/dao/planet"
-	planetCScoreDao "assessment/datamodel/generated/dao/planet_cross_score"
-	speciesDao "assessment/datamodel/generated/dao/species"
 	"log"
+	characterDao "star_wars_clash/datamodel/generated/dao/character"
+	charCScoreDao "star_wars_clash/datamodel/generated/dao/character_cross_score"
+	planetDao "star_wars_clash/datamodel/generated/dao/planet"
+	planetCScoreDao "star_wars_clash/datamodel/generated/dao/planet_cross_score"
+	speciesDao "star_wars_clash/datamodel/generated/dao/species"
 	"testing"
 )
 

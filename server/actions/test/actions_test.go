@@ -1,10 +1,10 @@
 package test
 
 import (
-	"assessment/server/actions"
-	"assessment/server/resources"
-	"assessment/utils"
 	"log"
+	"star_wars_clash/server/actions"
+	"star_wars_clash/server/resources"
+	"star_wars_clash/utils"
 	"testing"
 )
 
@@ -16,7 +16,8 @@ func TestLikeCharacter(t *testing.T) {
 	req := append(utils.Uint64ToBytes(charRef), utils.Uint64ToBytes(charCmd)...)
 	req = append(req, utils.Uint64ToBytes(liked)...)
 
-	_, err := actions.Like(resources.CHARACTER, req); if err != nil {
+	_, err := actions.Like(resources.CHARACTER, req)
+	if err != nil {
 		log.Fatal(err)
 	}
 }

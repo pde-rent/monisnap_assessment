@@ -1,4 +1,4 @@
-module assessment
+module star_wars_clash
 
 go 1.15
 

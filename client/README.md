@@ -1,4 +1,4 @@
-# star-wars-clash (assessment)
+# star-wars-clash (star-wars-clash)
 
 A Star Wars Face-Off
 

@@ -10,8 +10,8 @@ import (
     "github.com/golang/protobuf/proto"
 
     // project dependencies
-	"assessment/datamodel/adapter"
-    "assessment/datamodel/types"
+	"star_wars_clash/datamodel/adapter"
+    "star_wars_clash/datamodel/types"
 
     // dao dependencies
     ${imports}

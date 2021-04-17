@@ -7,11 +7,11 @@
 package entities
 
 import (
-	enums "assessment/datamodel/generated/proto/enums"
 	proto "github.com/golang/protobuf/proto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
+	enums "star_wars_clash/datamodel/generated/proto/enums"
 	sync "sync"
 )
 

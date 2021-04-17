@@ -1,9 +1,10 @@
 package ws
 
 import (
-	"assessment/server/actions"
-	"github.com/gofiber/websocket/v2"
 	"log"
+	"star_wars_clash/server/actions"
+
+	"github.com/gofiber/websocket/v2"
 )
 
 var _v = struct{}{}
@@ -23,7 +24,8 @@ func MainWsHandler(c *websocket.Conn) {
 	CON_SET[c] = _v
 	for {
 		if messageType, msg, err = c.ReadMessage(); err != nil {
-			wsCloseCallback(c, err); break
+			wsCloseCallback(c, err)
+			break
 		}
 		// TODO: this can be made a lot more generic / dynamic
 		action, resource, _ := actions.TopicBytesToActionResource(msg[:4])
@@ -31,11 +33,13 @@ func MainWsHandler(c *websocket.Conn) {
 		switch action {
 		case actions.GET:
 			res, err = actions.Get(resource)
-			if !write(c, messageType, res, true) { break }
+			if !write(c, messageType, res, true) {
+				break
+			}
 		case actions.LIKE:
 			res, err = actions.Like(resource, body)
 			writeAll(messageType, res, false)
-		//case actions.DISLIKE: res1, err = actions.Dislike(resource, body)
+			//case actions.DISLIKE: res1, err = actions.Dislike(resource, body)
 		}
 	}
 }
@@ -53,10 +57,13 @@ func write(c *websocket.Conn, messageType int, messages [][]byte, closeOnError b
 	for i := 0; i < len(messages); i++ {
 		if err := c.WriteMessage(messageType, messages[i]); err != nil {
 			log.Println(err)
-			if closeOnError { wsCloseCallback(c, err); c.Close() }
+			if closeOnError {
+				wsCloseCallback(c, err)
+				c.Close()
+			}
 			return false
 		} else {
-			log.Printf("%dkB to %v\n", len(messages[i]) / 1000, c.RemoteAddr())
+			log.Printf("%dkB to %v\n", len(messages[i])/1000, c.RemoteAddr())
 		}
 	}
 	return true
@@ -67,7 +74,9 @@ func writeAll(messageType int, messages [][]byte, closeOnError bool) int {
 
 	consumers := 0
 	for c, _ := range CON_SET {
-		if write(c, messageType, messages, closeOnError) { consumers++ }
+		if write(c, messageType, messages, closeOnError) {
+			consumers++
+		}
 	}
 	return consumers
 }

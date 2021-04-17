@@ -4,85 +4,79 @@ package planet
 
 import (
 
-    // external dependencies
-    "log"
-    "github.com/jackc/pgx/v4"
-    "github.com/golang/protobuf/proto"
+	// external dependencies
+	"log"
 
-    // project dependencies
-	"assessment/datamodel/adapter"
-    "assessment/datamodel/types"
+	"github.com/golang/protobuf/proto"
+	"github.com/jackc/pgx/v4"
 
-    // dao dependencies
-    . "assessment/datamodel/generated/proto/entities"
-    "github.com/jackc/pgtype"
-    . "assessment/datamodel/generated/proto/enums"
+	// project dependencies
+	"star_wars_clash/datamodel/adapter"
+	"star_wars_clash/datamodel/types"
+
+	// dao dependencies
+	. "star_wars_clash/datamodel/generated/proto/entities"
+	. "star_wars_clash/datamodel/generated/proto/enums"
+
+	"github.com/jackc/pgtype"
 )
 
 const (
-    TABLE_NAME = "planets"
+	TABLE_NAME = "planets"
 
-    ID = "id"
-    NAME = "name"
-    DAYS_TO_ROTATION = "days_to_rotation"
-    DAYS_TO_ORBIT = "days_to_orbit"
-    DIAMETER_KM = "diameter_km"
-    CLIMATE = "climate"
-    STANDARD_GRAVITY = "standard_gravity"
-    TERRAIN = "terrain"
-    SURFACE_WATER = "surface_water"
-    POPULATION = "population"
-
+	ID               = "id"
+	NAME             = "name"
+	DAYS_TO_ROTATION = "days_to_rotation"
+	DAYS_TO_ORBIT    = "days_to_orbit"
+	DIAMETER_KM      = "diameter_km"
+	CLIMATE          = "climate"
+	STANDARD_GRAVITY = "standard_gravity"
+	TERRAIN          = "terrain"
+	SURFACE_WATER    = "surface_water"
+	POPULATION       = "population"
 )
 
 var COLUMNS_TO_CREATE = []string{
-    NAME,
-    DAYS_TO_ROTATION,
-    DAYS_TO_ORBIT,
-    DIAMETER_KM,
-    CLIMATE,
-    STANDARD_GRAVITY,
-    TERRAIN,
-    SURFACE_WATER,
-    POPULATION,
-
+	NAME,
+	DAYS_TO_ROTATION,
+	DAYS_TO_ORBIT,
+	DIAMETER_KM,
+	CLIMATE,
+	STANDARD_GRAVITY,
+	TERRAIN,
+	SURFACE_WATER,
+	POPULATION,
 }
 
 var COLUMNS_TO_RETURN = []string{
-    ID,
-
+	ID,
 }
 
 var COLUMNS_TO_UPDATE = []string{
-    ID,
-    NAME,
-    DAYS_TO_ROTATION,
-    DAYS_TO_ORBIT,
-    DIAMETER_KM,
-    CLIMATE,
-    STANDARD_GRAVITY,
-    TERRAIN,
-    SURFACE_WATER,
-    POPULATION,
-
+	ID,
+	NAME,
+	DAYS_TO_ROTATION,
+	DAYS_TO_ORBIT,
+	DIAMETER_KM,
+	CLIMATE,
+	STANDARD_GRAVITY,
+	TERRAIN,
+	SURFACE_WATER,
+	POPULATION,
 }
 
-var DAO_LINKS map[string]types.Link = map[string]types.Link{
-    
-}
+var DAO_LINKS map[string]types.Link = map[string]types.Link{}
 
-var PRIMITIVE_LINKS map[string]types.Link = map[string]types.Link{
-    
-}
+var PRIMITIVE_LINKS map[string]types.Link = map[string]types.Link{}
 
 func fetchLinkRows(el *Planet, l types.Link) *pgx.Rows {
-    return adapter.SelectIn(l.Table, []string{ l.Target }, l.By, el.Id)
+	return adapter.SelectIn(l.Table, []string{l.Target}, l.By, el.Id)
 }
 
 func fetchLinks(el *Planet) {
-    // DAO_LINKS >> entity = true
+	// DAO_LINKS >> entity = true
 
-    // PRIMITIVE_LINKS >> entity = false
+	// PRIMITIVE_LINKS >> entity = false
 
 }
 
@@ -101,17 +95,16 @@ const PRINTER = `
 
 func getStorable(el *Planet) []interface{} {
 	return []interface{}{
-        el.Name,
-        el.DaysToRotation,
-        el.DaysToOrbit,
-        el.DiameterKm,
-        el.Climate,
-        el.StandardGravity,
-        el.Terrain,
-        el.SurfaceWaterRatio,
-        el.Population,
-
-    }
+		el.Name,
+		el.DaysToRotation,
+		el.DaysToOrbit,
+		el.DiameterKm,
+		el.Climate,
+		el.StandardGravity,
+		el.Terrain,
+		el.SurfaceWaterRatio,
+		el.Population,
+	}
 }
 
 func getStorableList(els ...*Planet) [][]interface{} {
@@ -128,8 +121,8 @@ var CACHE = cacheInit()
 func cacheInit() map[string]map[interface{}]*Planet {
 
 	c := map[string]map[interface{}]*Planet{}
-    c[ID] = map[interface{}]*Planet{}
-    c[NAME] = map[interface{}]*Planet{}
+	c[ID] = map[interface{}]*Planet{}
+	c[NAME] = map[interface{}]*Planet{}
 
 	return c
 }
@@ -137,8 +130,8 @@ func cacheInit() map[string]map[interface{}]*Planet {
 func addToCache(els ...*Planet) {
 
 	for _, el := range els {
-        CACHE[ID][el.Id] = el
-        CACHE[NAME][string(el.Name)] = el
+		CACHE[ID][el.Id] = el
+		CACHE[NAME][string(el.Name)] = el
 
 		// fmt.Println("cached: ", string(el.Email))
 	}
@@ -161,8 +154,8 @@ func removeFromCache(els ...*Planet) bool {
 
 	for _, el := range els {
 		if el, ok := CACHE[ID][el.Id]; ok {
-            delete(CACHE[ID], el.Id)
-            delete(CACHE[NAME], el.Name)
+			delete(CACHE[ID], el.Id)
+			delete(CACHE[NAME], el.Name)
 
 			return true
 		}
@@ -178,55 +171,55 @@ func removeFromCacheBy(by string, vals ...interface{}) bool {
 
 func FromRow(rows *pgx.Rows) *Planet {
 
-    var id uint64
-    var name pgtype.Varchar
-    var daysToRotation uint32
-    var daysToOrbit uint32
-    var diameterKm uint32
-    var climate string
-    var standardGravity float32
-    var terrain pgtype.Varchar
-    var surfaceWater float32
-    var population uint64
-
+	var id uint64
+	var name pgtype.Varchar
+	var daysToRotation uint32
+	var daysToOrbit uint32
+	var diameterKm uint32
+	var climate string
+	var standardGravity float32
+	var terrain pgtype.Varchar
+	var surfaceWater float32
+	var population uint64
 
 	err := (*rows).Scan(
-        &id,
-        &name,
-        &daysToRotation,
-        &daysToOrbit,
-        &diameterKm,
-        &climate,
-        &standardGravity,
-        &terrain,
-        &surfaceWater,
-        &population,
-
-    )
+		&id,
+		&name,
+		&daysToRotation,
+		&daysToOrbit,
+		&diameterKm,
+		&climate,
+		&standardGravity,
+		&terrain,
+		&surfaceWater,
+		&population,
+	)
 	if err != nil {
 		log.Print(err)
 		return nil
 	}
 
 	return &Planet{
-        Id: id,
-        Name: name.String,
-        DaysToRotation: daysToRotation,
-        DaysToOrbit: daysToOrbit,
-        DiameterKm: diameterKm,
-        Climate: Climate(Climate_value[climate]),
-        StandardGravity: standardGravity,
-        Terrain: terrain.String,
-        SurfaceWaterRatio: surfaceWater,
-        Population: population,
-
-    }
+		Id:                id,
+		Name:              name.String,
+		DaysToRotation:    daysToRotation,
+		DaysToOrbit:       daysToOrbit,
+		DiameterKm:        diameterKm,
+		Climate:           Climate(Climate_value[climate]),
+		StandardGravity:   standardGravity,
+		Terrain:           terrain.String,
+		SurfaceWaterRatio: surfaceWater,
+		Population:        population,
+	}
 }
 
 func GetBytes(el *Planet) []byte {
 
 	b, err := proto.Marshal(el)
-	if err != nil { log.Print(err); return nil }
+	if err != nil {
+		log.Print(err)
+		return nil
+	}
 	return b
 }
 
@@ -234,7 +227,10 @@ func GetBytes(el *Planet) []byte {
 func FromBytes(bytes []byte) *Planet {
 
 	u := &Planet{}
-	if err:= proto.Unmarshal(bytes, u); err != nil { log.Print(err); return nil }
+	if err := proto.Unmarshal(bytes, u); err != nil {
+		log.Print(err)
+		return nil
+	}
 	return u
 }
 
@@ -242,13 +238,19 @@ func FromBytes(bytes []byte) *Planet {
 func ListFromBytes(bl [][]byte) []*Planet {
 
 	var l []*Planet
-	for _, b := range bl { if el := FromBytes(b); el != nil { l = append(l, el) } }
+	for _, b := range bl {
+		if el := FromBytes(b); el != nil {
+			l = append(l, el)
+		}
+	}
 	return l
 }
 
 // prints entities from serialized bytes
 func Print(els ...*Planet) {
-	for _, el := range els { log.Printf(PRINTER, getStorable(el)...) }
+	for _, el := range els {
+		log.Printf(PRINTER, getStorable(el)...)
+	}
 }
 
 // prints entity from serialized bytes
@@ -258,7 +260,9 @@ func PrintFromBytes(b ...[]byte) {
 
 // store to database from entity
 func Store(el *Planet, cache bool) uint64 {
-	if cache { addToCache(el) }
+	if cache {
+		addToCache(el)
+	}
 	return adapter.Store(TABLE_NAME, COLUMNS_TO_CREATE, COLUMNS_TO_RETURN, getStorable(el)...)
 }
 
@@ -281,7 +285,9 @@ func DeleteBy(by string, vals ...interface{}) int64 {
 func Delete(els ...*Planet) int64 {
 
 	var ids []interface{}
-	for _, el := range els { ids = append(ids, el.Id) }
+	for _, el := range els {
+		ids = append(ids, el.Id)
+	}
 	removeFromCache(els...)
 	return DeleteBy(ID, ids...)
 }
@@ -289,23 +295,27 @@ func Delete(els ...*Planet) int64 {
 // update entity in cache and database
 func UpdateOne(el *Planet) int64 {
 
-    executed := int64(0)
-    if el.Id == 0 {
-        // new element >> store
-        el.Id = Store(el, true)
-        executed = 1
-    } else {
-        executed = adapter.UpdateOneEquals(TABLE_NAME, COLUMNS_TO_UPDATE, append([]interface{}{ el.Id }, getStorable(el)...), ID, el.Id)
-    }
-    addToCache(el)
-    return executed
+	executed := int64(0)
+	if el.Id == 0 {
+		// new element >> store
+		el.Id = Store(el, true)
+		executed = 1
+	} else {
+		executed = adapter.UpdateOneEquals(TABLE_NAME, COLUMNS_TO_UPDATE, append([]interface{}{el.Id}, getStorable(el)...), ID, el.Id)
+	}
+	addToCache(el)
+	return executed
 }
 
 // create entities from query resultset
 func FromRows(rows *pgx.Rows) []*Planet {
-	if rows == nil || *rows == nil { return nil }
+	if rows == nil || *rows == nil {
+		return nil
+	}
 	var list []*Planet
-	for (*rows).Next() { list = append(list, FromRow(rows)) }
+	for (*rows).Next() {
+		list = append(list, FromRow(rows))
+	}
 	return list
 }
 
@@ -317,8 +327,8 @@ func FetchBy(by string, vals ...interface{}) []*Planet {
 
 // create entities from database query
 func FetchAll() []*Planet {
-    rows := adapter.SelectAll(TABLE_NAME, nil)
-    return FromRows(rows)
+	rows := adapter.SelectAll(TABLE_NAME, nil)
+	return FromRows(rows)
 }
 
 // create entities from cache or database
@@ -344,11 +354,11 @@ func GetBy(by string, vals ...interface{}) []*Planet {
 
 func GetOneBy(by string, val interface{}) *Planet {
 	l := GetBy(by, val)
-	if len(l) > 0 { return GetBy(by, val)[0] }
+	if len(l) > 0 {
+		return GetBy(by, val)[0]
+	}
 	return nil
 }
-
-
 
 func TestDao() {
 

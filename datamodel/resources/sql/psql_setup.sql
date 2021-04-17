@@ -15,16 +15,16 @@
 -- GRANT read_write_role TO dbrw;
 -- GRANT read_only_role TO dbr;
 
--- DROP DATABASE IF EXISTS assessment;
+-- DROP DATABASE IF EXISTS star_wars_clash;
 -- TODO: one per env (drift_prod / drift_test / drift_dev)
-CREATE TABLESPACE assessment_tablespace OWNER dba LOCATION '/data/sql/tablespaces/assessment';
-CREATE DATABASE assessment_db TABLESPACE assessment_tablespace OWNER dba ENCODING 'UTF8';
+CREATE TABLESPACE star_wars_clash_tablespace OWNER dba LOCATION '/data/sql/tablespaces/star_wars_clash';
+CREATE DATABASE star_wars_clash_db TABLESPACE star_wars_clash_tablespace OWNER dba ENCODING 'UTF8';
 -- revoke default privileges
-REVOKE CONNECT ON DATABASE assessment_db FROM PUBLIC;
+REVOKE CONNECT ON DATABASE star_wars_clash_db FROM PUBLIC;
 -- elevate dba to all privileges
--- ALTER DATABASE assessment_db owner to dba;
-GRANT ALL PRIVILEGES ON DATABASE assessment_db TO dba;
+-- ALTER DATABASE star_wars_clash_db owner to dba;
+GRANT ALL PRIVILEGES ON DATABASE star_wars_clash_db TO dba;
 -- grant connect and access to schema and relevant objects
-GRANT CONNECT ON DATABASE assessment_db TO dbrw, dbr;
+GRANT CONNECT ON DATABASE star_wars_clash_db TO dbrw, dbr;
 
 -- READY TO TAKE IN THE GENERATED schema.sql file (output of generate_datamodel.py, in ./generated/sql/)

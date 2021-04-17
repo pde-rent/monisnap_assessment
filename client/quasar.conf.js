@@ -212,7 +212,7 @@ module.exports = configure(function (ctx) {
             builder: {
                 // https://www.electron.build/configuration/configuration
 
-                appId: 'assessment'
+                appId: 'star-wars-clash'
             },
 
             // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain

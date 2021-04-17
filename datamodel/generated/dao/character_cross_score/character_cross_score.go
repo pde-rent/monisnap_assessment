@@ -4,68 +4,61 @@ package character_cross_score
 
 import (
 
-    // external dependencies
-    "log"
-    "github.com/jackc/pgx/v4"
-    "github.com/golang/protobuf/proto"
+	// external dependencies
+	"log"
 
-    // project dependencies
-	"assessment/datamodel/adapter"
-    "assessment/datamodel/types"
+	"github.com/golang/protobuf/proto"
+	"github.com/jackc/pgx/v4"
 
-    // dao dependencies
-    . "assessment/datamodel/generated/proto/entities"
+	// project dependencies
+	"star_wars_clash/datamodel/adapter"
+	"star_wars_clash/datamodel/types"
+
+	// dao dependencies
+	. "star_wars_clash/datamodel/generated/proto/entities"
 )
 
 const (
-    TABLE_NAME = "character_cross_scores"
+	TABLE_NAME = "character_cross_scores"
 
-    ID = "id"
-    REF = "ref"
-    CMP = "cmp"
-    REF_LIKES = "ref_likes"
-    CMP_LIKES = "cmp_likes"
-
+	ID        = "id"
+	REF       = "ref"
+	CMP       = "cmp"
+	REF_LIKES = "ref_likes"
+	CMP_LIKES = "cmp_likes"
 )
 
 var COLUMNS_TO_CREATE = []string{
-    REF,
-    CMP,
-    REF_LIKES,
-    CMP_LIKES,
-
+	REF,
+	CMP,
+	REF_LIKES,
+	CMP_LIKES,
 }
 
 var COLUMNS_TO_RETURN = []string{
-    ID,
-
+	ID,
 }
 
 var COLUMNS_TO_UPDATE = []string{
-    ID,
-    REF,
-    CMP,
-    REF_LIKES,
-    CMP_LIKES,
-
+	ID,
+	REF,
+	CMP,
+	REF_LIKES,
+	CMP_LIKES,
 }
 
-var DAO_LINKS map[string]types.Link = map[string]types.Link{
-    
-}
+var DAO_LINKS map[string]types.Link = map[string]types.Link{}
 
-var PRIMITIVE_LINKS map[string]types.Link = map[string]types.Link{
-    
-}
+var PRIMITIVE_LINKS map[string]types.Link = map[string]types.Link{}
 
 func fetchLinkRows(el *CharacterCrossScore, l types.Link) *pgx.Rows {
-    return adapter.SelectIn(l.Table, []string{ l.Target }, l.By, el.Id)
+	return adapter.SelectIn(l.Table, []string{l.Target}, l.By, el.Id)
 }
 
 func fetchLinks(el *CharacterCrossScore) {
-    // DAO_LINKS >> entity = true
+	// DAO_LINKS >> entity = true
 
-    // PRIMITIVE_LINKS >> entity = false
+	// PRIMITIVE_LINKS >> entity = false
 
 }
 
@@ -79,12 +72,11 @@ const PRINTER = `
 
 func getStorable(el *CharacterCrossScore) []interface{} {
 	return []interface{}{
-        el.Ref,
-        el.Cmp,
-        el.RefLikes,
-        el.CmpLikes,
-
-    }
+		el.Ref,
+		el.Cmp,
+		el.RefLikes,
+		el.CmpLikes,
+	}
 }
 
 func getStorableList(els ...*CharacterCrossScore) [][]interface{} {
@@ -101,9 +93,9 @@ var CACHE = cacheInit()
 func cacheInit() map[string]map[interface{}]*CharacterCrossScore {
 
 	c := map[string]map[interface{}]*CharacterCrossScore{}
-    c[ID] = map[interface{}]*CharacterCrossScore{}
-    c[REF] = map[interface{}]*CharacterCrossScore{}
-    c[CMP] = map[interface{}]*CharacterCrossScore{}
+	c[ID] = map[interface{}]*CharacterCrossScore{}
+	c[REF] = map[interface{}]*CharacterCrossScore{}
+	c[CMP] = map[interface{}]*CharacterCrossScore{}
 
 	return c
 }
@@ -111,9 +103,9 @@ func cacheInit() map[string]map[interface{}]*CharacterCrossScore {
 func addToCache(els ...*CharacterCrossScore) {
 
 	for _, el := range els {
-        CACHE[ID][el.Id] = el
-        CACHE[REF][el.Ref] = el
-        CACHE[CMP][el.Cmp] = el
+		CACHE[ID][el.Id] = el
+		CACHE[REF][el.Ref] = el
+		CACHE[CMP][el.Cmp] = el
 
 		// fmt.Println("cached: ", string(el.Email))
 	}
@@ -136,9 +128,9 @@ func removeFromCache(els ...*CharacterCrossScore) bool {
 
 	for _, el := range els {
 		if el, ok := CACHE[ID][el.Id]; ok {
-            delete(CACHE[ID], el.Id)
-            delete(CACHE[REF], el.Ref)
-            delete(CACHE[CMP], el.Cmp)
+			delete(CACHE[ID], el.Id)
+			delete(CACHE[REF], el.Ref)
+			delete(CACHE[CMP], el.Cmp)
 
 			return true
 		}
@@ -154,40 +146,40 @@ func removeFromCacheBy(by string, vals ...interface{}) bool {
 
 func FromRow(rows *pgx.Rows) *CharacterCrossScore {
 
-    var id uint64
-    var ref uint64
-    var cmp uint64
-    var refLikes uint32
-    var cmpLikes uint32
-
+	var id uint64
+	var ref uint64
+	var cmp uint64
+	var refLikes uint32
+	var cmpLikes uint32
 
 	err := (*rows).Scan(
-        &id,
-        &ref,
-        &cmp,
-        &refLikes,
-        &cmpLikes,
-
-    )
+		&id,
+		&ref,
+		&cmp,
+		&refLikes,
+		&cmpLikes,
+	)
 	if err != nil {
 		log.Print(err)
 		return nil
 	}
 
 	return &CharacterCrossScore{
-        Id: id,
-        Ref: ref,
-        Cmp: cmp,
-        RefLikes: refLikes,
-        CmpLikes: cmpLikes,
-
-    }
+		Id:       id,
+		Ref:      ref,
+		Cmp:      cmp,
+		RefLikes: refLikes,
+		CmpLikes: cmpLikes,
+	}
 }
 
 func GetBytes(el *CharacterCrossScore) []byte {
 
 	b, err := proto.Marshal(el)
-	if err != nil { log.Print(err); return nil }
+	if err != nil {
+		log.Print(err)
+		return nil
+	}
 	return b
 }
 
@@ -195,7 +187,10 @@ func GetBytes(el *CharacterCrossScore) []byte {
 func FromBytes(bytes []byte) *CharacterCrossScore {
 
 	u := &CharacterCrossScore{}
-	if err:= proto.Unmarshal(bytes, u); err != nil { log.Print(err); return nil }
+	if err := proto.Unmarshal(bytes, u); err != nil {
+		log.Print(err)
+		return nil
+	}
 	return u
 }
 
@@ -203,13 +198,19 @@ func FromBytes(bytes []byte) *CharacterCrossScore {
 func ListFromBytes(bl [][]byte) []*CharacterCrossScore {
 
 	var l []*CharacterCrossScore
-	for _, b := range bl { if el := FromBytes(b); el != nil { l = append(l, el) } }
+	for _, b := range bl {
+		if el := FromBytes(b); el != nil {
+			l = append(l, el)
+		}
+	}
 	return l
 }
 
 // prints entities from serialized bytes
 func Print(els ...*CharacterCrossScore) {
-	for _, el := range els { log.Printf(PRINTER, getStorable(el)...) }
+	for _, el := range els {
+		log.Printf(PRINTER, getStorable(el)...)
+	}
 }
 
 // prints entity from serialized bytes
@@ -219,7 +220,9 @@ func PrintFromBytes(b ...[]byte) {
 
 // store to database from entity
 func Store(el *CharacterCrossScore, cache bool) uint64 {
-	if cache { addToCache(el) }
+	if cache {
+		addToCache(el)
+	}
 	return adapter.Store(TABLE_NAME, COLUMNS_TO_CREATE, COLUMNS_TO_RETURN, getStorable(el)...)
 }
 
@@ -242,7 +245,9 @@ func DeleteBy(by string, vals ...interface{}) int64 {
 func Delete(els ...*CharacterCrossScore) int64 {
 
 	var ids []interface{}
-	for _, el := range els { ids = append(ids, el.Id) }
+	for _, el := range els {
+		ids = append(ids, el.Id)
+	}
 	removeFromCache(els...)
 	return DeleteBy(ID, ids...)
 }
@@ -250,23 +255,27 @@ func Delete(els ...*CharacterCrossScore) int64 {
 // update entity in cache and database
 func UpdateOne(el *CharacterCrossScore) int64 {
 
-    executed := int64(0)
-    if el.Id == 0 {
-        // new element >> store
-        el.Id = Store(el, true)
-        executed = 1
-    } else {
-        executed = adapter.UpdateOneEquals(TABLE_NAME, COLUMNS_TO_UPDATE, append([]interface{}{ el.Id }, getStorable(el)...), ID, el.Id)
-    }
-    addToCache(el)
-    return executed
+	executed := int64(0)
+	if el.Id == 0 {
+		// new element >> store
+		el.Id = Store(el, true)
+		executed = 1
+	} else {
+		executed = adapter.UpdateOneEquals(TABLE_NAME, COLUMNS_TO_UPDATE, append([]interface{}{el.Id}, getStorable(el)...), ID, el.Id)
+	}
+	addToCache(el)
+	return executed
 }
 
 // create entities from query resultset
 func FromRows(rows *pgx.Rows) []*CharacterCrossScore {
-	if rows == nil || *rows == nil { return nil }
+	if rows == nil || *rows == nil {
+		return nil
+	}
 	var list []*CharacterCrossScore
-	for (*rows).Next() { list = append(list, FromRow(rows)) }
+	for (*rows).Next() {
+		list = append(list, FromRow(rows))
+	}
 	return list
 }
 
@@ -278,8 +287,8 @@ func FetchBy(by string, vals ...interface{}) []*CharacterCrossScore {
 
 // create entities from database query
 func FetchAll() []*CharacterCrossScore {
-    rows := adapter.SelectAll(TABLE_NAME, nil)
-    return FromRows(rows)
+	rows := adapter.SelectAll(TABLE_NAME, nil)
+	return FromRows(rows)
 }
 
 // create entities from cache or database
@@ -305,11 +314,11 @@ func GetBy(by string, vals ...interface{}) []*CharacterCrossScore {
 
 func GetOneBy(by string, val interface{}) *CharacterCrossScore {
 	l := GetBy(by, val)
-	if len(l) > 0 { return GetBy(by, val)[0] }
+	if len(l) > 0 {
+		return GetBy(by, val)[0]
+	}
 	return nil
 }
-
-
 
 func TestDao() {
 
